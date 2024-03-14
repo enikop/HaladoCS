@@ -218,7 +218,7 @@ namespace MazeApp.Model
             }
         }
 
-        public bool IsWallBetween((int, int) cell1, (int, int) cell2)
+        public bool IsWallBetween((int, int) cell1, (int, int) cell2) //(row, col)
         {
             //If a cell index is invalid, throw Exception
             if (cell1.Item1 < 0 || cell1.Item2 < 0 || cell2.Item1 < 0 || cell2.Item2 < 0

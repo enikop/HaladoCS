@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:MazeApp.View"
         mc:Ignorable="d"
         Title="MultiplayerWindow" 
-        Topmost="True"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
     <Window.Resources>
@@ -29,6 +28,48 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center" Name="mainGrid"/>
+        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center" Name="mainGrid">
+            <Ellipse Grid.Row ="{Binding PlayerOneY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerOneX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{Binding CurrentTheme.PlayerOneColor, Converter={StaticResource colourConverter}}" Panel.ZIndex="1"/>
+            <Ellipse Grid.Row ="{Binding PlayerTwoY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerTwoX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{Binding CurrentTheme.PlayerTwoColor, Converter={StaticResource colourConverter}}" Panel.ZIndex="1"/>
+        </Grid>
+        <Grid Grid.Row ="1" Grid.Column="0">
+            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="Blue" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Canvas.Clip>
+                    <GeometryGroup FillRule="EvenOdd">
+                        <RectangleGeometry Rect="21,1,198,198"/>
+                        <RectangleGeometry Rect="0,0,640,640"/>
+                        <RectangleGeometry Rect="101,1,198,198"/>
+                    </GeometryGroup>
+                </Canvas.Clip>
+            </Canvas>
+            <Canvas Width="200" Height="200" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Canvas.Background>
+                    <!-- Radial gradient brush for circular gradient background -->
+                    <RadialGradientBrush>
+                        <GradientStop Color="Blue" Offset="1"/>
+                        <GradientStop Color="Transparent" Offset="0.5"/>
+                        <RadialGradientBrush.Center>
+                            <Point X="0.5" Y="0.5"/>
+                            <!-- Half of the canvas width and height -->
+                        </RadialGradientBrush.Center>
+
+                    </RadialGradientBrush>
+                </Canvas.Background>
+            </Canvas>
+            <Canvas Width="200" Height="200" Margin="100,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Canvas.Background>
+                    <!-- Radial gradient brush for circular gradient background -->
+                    <RadialGradientBrush>
+                        <GradientStop Color="Blue" Offset="1"/>
+                        <GradientStop Color="Transparent" Offset="0.5"/>
+                        <RadialGradientBrush.Center>
+                            <Point X="0.5" Y="0.5"/>
+                            <!-- Half of the canvas width and height -->
+                        </RadialGradientBrush.Center>
+
+                    </RadialGradientBrush>
+                </Canvas.Background>
+            </Canvas>
+        </Grid>
     </Grid>
 </Window>
