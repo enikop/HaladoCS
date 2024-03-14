@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeApp.View"
         mc:Ignorable="d"
-        Title="MultiplayerWindow" SizeToContent="WidthAndHeight">
+        Title="MultiplayerWindow" 
+        Topmost="True"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight">
     <Window.Resources>
         <local:ColourToBrushConverter x:Key="colourConverter"/>
     </Window.Resources>

@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeApp.View"
+        xmlns:model="clr-namespace:MazeApp.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="500">
+        Title="MainWindow" Height="400" Width="500"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:ColourToBrushConverter x:Key="colourConverter"/>
         <!-- Define a style for the buttons -->
@@ -43,6 +45,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+
     <Grid Name="baseGrid" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -73,10 +76,10 @@
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="1" Content="Single player" Width="300" Click="Singleplayer_Click" Style="{StaticResource RoundButtonStyle}"/>
-            <Button Grid.Row="2" Content="Multiplayer" Width="300" Click="Multiplayer_Click" Style="{StaticResource RoundButtonStyle}"/>
-            <Button Grid.Row="4" Content="Settings" Width="300" Style="{StaticResource RoundButtonStyle}" Click="Settings_Click"/>
-            <Button Grid.Row="5" Content="Quit" Width="300" Style="{StaticResource RoundButtonStyle}"  Click="Quit_Click"/>
+            <Button Grid.Row="1" Content="Single player" Width="300" Command="{Binding OpenSingleplayerCommand}" Style="{StaticResource RoundButtonStyle}"/>
+            <Button Grid.Row="2" Content="Multiplayer" Width="300" Command="{Binding OpenMultiplayerCommand}" Style="{StaticResource RoundButtonStyle}"/>
+            <Button Grid.Row="4" Content="Settings" Width="300" Command="{Binding OpenSettingsCommand}" Style="{StaticResource RoundButtonStyle}"/>
+            <Button Grid.Row="5" Content="Quit" Width="300" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Style="{StaticResource RoundButtonStyle}"/>
 
         </Grid>
         <!--<StackPanel Grid.Row ="1" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Red">-->

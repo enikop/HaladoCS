@@ -27,23 +27,22 @@ namespace MazeApp.View
         private int cellSize = 40;
         private Ellipse player1;
         private Ellipse player2;
-        private Settings settings;
 
         private Direction player1Dir;
         private Direction player2Dir;
+
+        private readonly MultiplayerViewModel multiplayerViewModel;
         public MultiplayerWindow(Settings settings)
         {
             InitializeComponent();
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            this.settings = settings;
+            this.multiplayerViewModel = new MultiplayerViewModel(settings);
 
+            DataContext = this.multiplayerViewModel;
 
-            DataContext = this.settings;
-
-            mazeAlt = new Maze(settings.MazeWidth, settings.MazeHeight, settings.Algorithm);
-            player1 = new Ellipse { Width = cellSize - 10, Height = cellSize - 10, Fill = new SolidColorBrush(settings.CurrentTheme.PlayerOneColor) };
-            player2 = new Ellipse { Width = cellSize - 10, Height = cellSize - 10, Fill = new SolidColorBrush(settings.CurrentTheme.PlayerTwoColor) };
+            mazeAlt = new Maze(multiplayerViewModel.MazeWidth, multiplayerViewModel.MazeHeight, multiplayerViewModel.Algorithm);
+            player1 = new Ellipse { Width = cellSize - 10, Height = cellSize - 10, Fill = new SolidColorBrush(multiplayerViewModel.CurrentTheme.PlayerOneColor) };
+            player2 = new Ellipse { Width = cellSize - 10, Height = cellSize - 10, Fill = new SolidColorBrush(multiplayerViewModel.CurrentTheme.PlayerTwoColor) };
             this.PreviewKeyDown += Multiplayer_PreviewKeyDown;
             this.PreviewKeyUp += Multiplayer_PreviewKeyUp;
 
@@ -181,7 +180,7 @@ namespace MazeApp.View
                         mainGrid.ColumnDefinitions.Add(colDef);
                     }
                     Canvas canvas = new Canvas();
-                    canvas.Background = new SolidColorBrush(this.settings.CurrentTheme.BackgroundColor);
+                    canvas.Background = new SolidColorBrush(this.multiplayerViewModel.CurrentTheme.BackgroundColor);
                     canvas.Width = cellSize;
                     canvas.Height = cellSize;
                     DrawCell(canvas, i, j);
@@ -209,7 +208,7 @@ namespace MazeApp.View
         private void DrawCell(Canvas canvas, int row, int col)
         {
             Direction sides = mazeAlt.GetCell(row, col);
-            SolidColorBrush brush = new SolidColorBrush(settings.CurrentTheme.MainForegroundColor);
+            SolidColorBrush brush = new SolidColorBrush(multiplayerViewModel.CurrentTheme.MainForegroundColor);
             if (sides.HasFlag(Direction.North))
             {
                 Line line = new Line

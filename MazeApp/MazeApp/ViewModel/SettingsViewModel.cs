@@ -117,7 +117,7 @@ namespace MazeApp.ViewModel
             get
             {
                 if (updater == null)
-                    updater = new Updater(this);
+                    updater = new SettingsUpdater(this);
                 return updater;
             }
             set
@@ -126,10 +126,10 @@ namespace MazeApp.ViewModel
             }
         }
 
-        private class Updater : ICommand
+        private class SettingsUpdater : ICommand
         {
             private SettingsViewModel settingsViewModel;
-            public Updater(SettingsViewModel settingsViewModel)
+            public SettingsUpdater(SettingsViewModel settingsViewModel)
             {
                 this.settingsViewModel = settingsViewModel;
             }
