@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MazeApp.ViewModel;
 using MazeApp.Model;
+using System.Timers;
 
 namespace MazeApp.View
 {
@@ -21,8 +22,7 @@ namespace MazeApp.View
     /// Interaction logic for MultiplayerWindow.xaml
     /// </summary>
     public partial class MultiplayerWindow : Window
-    {
-        private volatile bool isRunning = true;
+    { 
         private Maze mazeAlt;
         private int cellSize = 40;
         private Ellipse player1;
@@ -30,6 +30,7 @@ namespace MazeApp.View
 
         private Direction player1Dir;
         private Direction player2Dir;
+        private System.Timers.Timer aTimer;
 
         private readonly MultiplayerViewModel multiplayerViewModel;
         public MultiplayerWindow(Settings settings)
@@ -46,11 +47,7 @@ namespace MazeApp.View
             this.PreviewKeyDown += Multiplayer_PreviewKeyDown;
             this.PreviewKeyUp += Multiplayer_PreviewKeyUp;
 
-            // Start player threads
-            Thread player1Thread = new Thread(Player1Thread);
-            Thread player2Thread = new Thread(Player2Thread);
-            player1Thread.Start();
-            player2Thread.Start();
+            SetTimer();
             DrawMaze();
         }
 
@@ -62,6 +59,15 @@ namespace MazeApp.View
         private void Multiplayer_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             UpdatePlayerKeyState(e.Key, false);
+        }
+
+        private void SetTimer()
+        {
+            // Timer with 0.09 sec interval
+            aTimer = new System.Timers.Timer(90);
+            aTimer.Elapsed += UpdatePlayerPositions;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
         }
 
         public void UpdatePlayerKeyState(Key key, bool pressed)
@@ -79,35 +85,22 @@ namespace MazeApp.View
             else if (key == Key.Right) player1Dir = pressed ? player1Dir | Direction.East : player1Dir & ~Direction.East;
         }
 
-        private void Player1Thread()
+        private void UpdatePlayerPositions(Object? source, ElapsedEventArgs e)
         {
             Direction[] dirs = new Direction[] { Direction.North, Direction.South, Direction.West, Direction.East };
-            while (isRunning)
+            foreach (Direction dir in dirs)
             {
-                foreach (Direction dir in dirs)
+                if (player1Dir.HasFlag(dir))
                 {
-                    if (player1Dir.HasFlag(dir))
-                    {
-                        MovePlayer(player1, dir);
-                    }
+                    MovePlayer(player1, dir);
                 }
-                Thread.Sleep(90);
             }
-        }
-
-        private void Player2Thread()
-        {
-            Direction[] dirs = new Direction[] { Direction.North, Direction.South, Direction.West, Direction.East };
-            while (isRunning)
+            foreach (Direction dir in dirs)
             {
-                foreach (Direction dir in dirs)
+                if (player2Dir.HasFlag(dir))
                 {
-                    if (player2Dir.HasFlag(dir))
-                    {
-                        MovePlayer(player2, dir);
-                    }
+                    MovePlayer(player2, dir);
                 }
-                Thread.Sleep(90);
             }
         }
 
@@ -267,7 +260,8 @@ namespace MazeApp.View
 
         protected override void OnClosed(EventArgs e)
         {
-            isRunning = false;
+            aTimer.Stop();
+            aTimer.Dispose();
             base.OnClosed(e);
 
         }
