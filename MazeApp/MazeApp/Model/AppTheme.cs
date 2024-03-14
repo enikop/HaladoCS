@@ -17,53 +17,6 @@ namespace MazeApp.Model
         public Color PlayerOneColor { get; set; }
         public Color PlayerTwoColor { get; set; }
 
-        public Brush BackgroundBrush
-        {
-            get
-            {
-                return new SolidColorBrush(BackgroundColor);
-            }
-        }
-
-        public Brush MainForegroundBrush
-        {
-            get
-            {
-                return new SolidColorBrush(MainForegroundColor);
-            }
-        }
-
-        public Brush SecondaryForegroundBrush
-        {
-            get
-            {
-                return new SolidColorBrush(SecondaryForegroundColor);
-            }
-        }
-
-        public Brush TertiaryForegroundBrush
-        {
-            get
-            {
-                return new SolidColorBrush(TertiaryForegroundColor);
-            }
-        }
-        public Brush PlayerOneBrush
-        {
-            get
-            {
-                return new SolidColorBrush(PlayerOneColor);
-            }
-        }
-        public Brush PlayerTwoBrush
-        {
-            get
-            {
-                return new SolidColorBrush(PlayerTwoColor);
-            }
-        }
-
-
         public AppTheme(ColourTheme colourTheme, Color backgroundColor, Color mainForegroundColor, Color secondaryForegroundColor, Color tertiaryForegroundColor, Color playerOneColor, Color playerTwoColor)
         {
             ColourTheme = colourTheme;

@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:MazeApp.View"
         mc:Ignorable="d"
         Title="MultiplayerWindow" SizeToContent="WidthAndHeight">
-    <Grid Name="baseGrid" Background="{Binding CurrentTheme.BackgroundBrush, UpdateSourceTrigger=PropertyChanged}">
+    <Window.Resources>
+        <local:ColourToBrushConverter x:Key="colourConverter"/>
+    </Window.Resources>
+    <Grid Name="baseGrid" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
