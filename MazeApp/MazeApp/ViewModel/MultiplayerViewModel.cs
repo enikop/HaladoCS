@@ -34,6 +34,11 @@ namespace MazeApp.ViewModel
             }
         }
 
+        public int LightRadius
+        {
+            get { return CellSize*5+CellSize/2; }
+        }
+
         public int PlayerSize
         {
             get 
