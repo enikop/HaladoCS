@@ -12,7 +12,7 @@
         <local:ColourToBrushConverter x:Key="colourConverter"/>
         <local:RectangleConverter x:Key="rectConverter"/>
         <local:ThicknessConverter x:Key="thicknessConverter"/>
-        <local:GridConverter x:Key="gridConverter"/>
+        <local:EllipseCenterConverter x:Key="centerConverter"/>
     </Window.Resources>
     <Grid Name="baseGrid" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}">
         <Grid.ColumnDefinitions>
@@ -36,51 +36,129 @@
             <Ellipse Grid.Row ="{Binding PlayerTwoY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerTwoX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{Binding CurrentTheme.PlayerTwoColor, Converter={StaticResource colourConverter}}" Panel.ZIndex="1"/>
         </Grid>
         <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center">
-            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="Blue" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
                     <CombinedGeometry GeometryCombineMode="Exclude">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry>
+                                <RectangleGeometry.Rect>
+                                    <MultiBinding Converter="{StaticResource rectConverter}">
+                                        <Binding Path="MazeTotalHeight"/>
+                                        <Binding Path="MazeTotalWidth"/>
+                                    </MultiBinding>
+                                </RectangleGeometry.Rect>
+                            </RectangleGeometry>
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <CombinedGeometry>
                                 <CombinedGeometry.Geometry1>
-                                    <RectangleGeometry>
-                                        <RectangleGeometry.Rect>
-                                            <MultiBinding Converter="{StaticResource rectConverter}">
-                                                <Binding Path="MazeTotalHeight"/>
-                                                <Binding Path="MazeTotalWidth"/>
+                                    <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                                        <EllipseGeometry.Center>
+                                            <MultiBinding Converter="{StaticResource centerConverter}">
+                                                <Binding Path="PlayerOneX"/>
+                                                <Binding Path="PlayerOneY"/>
+                                                <Binding Path="CellSize"/>
                                             </MultiBinding>
-                                        </RectangleGeometry.Rect>
-                                    </RectangleGeometry>
+                                        </EllipseGeometry.Center>
+                                    </EllipseGeometry>
                                 </CombinedGeometry.Geometry1>
                                 <CombinedGeometry.Geometry2>
-                                    <CombinedGeometry>
-                                        <CombinedGeometry.Geometry1>
-                                            <RectangleGeometry>
-                                                <RectangleGeometry.Rect>
-                                                    <MultiBinding Converter="{StaticResource rectConverter}">
-                                                        <Binding Path="PlayerOneX"/>
-                                                        <Binding Path="PlayerOneY"/>
-                                                        <Binding Path="LightRadius"/>
-                                                        <Binding Path="LightRadius"/>
-                                                        <Binding Path="CellSize"/>
-                                                    </MultiBinding>
-                                                </RectangleGeometry.Rect>
-                                            </RectangleGeometry>
-                                        </CombinedGeometry.Geometry1>
-                                        <CombinedGeometry.Geometry2>
-                                            <RectangleGeometry>
-                                                <RectangleGeometry.Rect>
-                                                    <MultiBinding Converter="{StaticResource rectConverter}">
-                                                        <Binding Path="PlayerTwoX"/>
-                                                        <Binding Path="PlayerTwoY"/>
-                                                        <Binding Path="LightRadius"/>
-                                                        <Binding Path="LightRadius"/>
-                                                        <Binding Path="CellSize"/>
-                                                    </MultiBinding>
-                                                </RectangleGeometry.Rect>
-                                            </RectangleGeometry>
-                                        </CombinedGeometry.Geometry2>
-                                    </CombinedGeometry>
+                                    <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                                        <EllipseGeometry.Center>
+                                            <MultiBinding Converter="{StaticResource centerConverter}">
+                                                <Binding Path="PlayerTwoX"/>
+                                                <Binding Path="PlayerTwoY"/>
+                                                <Binding Path="CellSize"/>
+                                            </MultiBinding>
+                                        </EllipseGeometry.Center>
+                                    </EllipseGeometry>
                                 </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </CombinedGeometry.Geometry2>
                     </CombinedGeometry>
                 </Canvas.Clip>
+            </Canvas>
+        </Grid>
+        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center">
+            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Canvas.Clip>
+                    <CombinedGeometry GeometryCombineMode="Exclude">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry>
+                                <RectangleGeometry.Rect>
+                                    <MultiBinding Converter="{StaticResource rectConverter}">
+                                        <Binding Path="MazeTotalHeight"/>
+                                        <Binding Path="MazeTotalWidth"/>
+                                    </MultiBinding>
+                                </RectangleGeometry.Rect>
+                            </RectangleGeometry>
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <CombinedGeometry GeometryCombineMode="Intersect">
+                                <CombinedGeometry.Geometry1>
+                                    <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                                        <EllipseGeometry.Center>
+                                            <MultiBinding Converter="{StaticResource centerConverter}">
+                                                <Binding Path="PlayerOneX"/>
+                                                <Binding Path="PlayerOneY"/>
+                                                <Binding Path="CellSize"/>
+                                            </MultiBinding>
+                                        </EllipseGeometry.Center>
+                                    </EllipseGeometry>
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                                        <EllipseGeometry.Center>
+                                            <MultiBinding Converter="{StaticResource centerConverter}">
+                                                <Binding Path="PlayerTwoX"/>
+                                                <Binding Path="PlayerTwoY"/>
+                                                <Binding Path="CellSize"/>
+                                            </MultiBinding>
+                                        </EllipseGeometry.Center>
+                                    </EllipseGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+                </Canvas.Clip>
+                <Path>
+                    <Path.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="Transparent" Offset="0.7"/>
+                            <GradientStop Color="{Binding CurrentTheme.BackgroundColor}" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Path.Fill>
+                    <Path.Data>
+                        <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                            <EllipseGeometry.Center>
+                                <MultiBinding Converter="{StaticResource centerConverter}">
+                                    <Binding Path="PlayerOneX"/>
+                                    <Binding Path="PlayerOneY"/>
+                                    <Binding Path="CellSize"/>
+                                </MultiBinding>
+                            </EllipseGeometry.Center>
+                        </EllipseGeometry>
+                    </Path.Data>
+                </Path>
+                <Path>
+                    <Path.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="Transparent" Offset="0.7"/>
+                            <GradientStop Color="{Binding CurrentTheme.BackgroundColor}" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Path.Fill>
+                    <Path.Data>
+                        <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                            <EllipseGeometry.Center>
+                                <MultiBinding Converter="{StaticResource centerConverter}">
+                                    <Binding Path="PlayerTwoX"/>
+                                    <Binding Path="PlayerTwoY"/>
+                                    <Binding Path="CellSize"/>
+                                </MultiBinding>
+                            </EllipseGeometry.Center>
+                        </EllipseGeometry>
+                    </Path.Data>
+                </Path>
             </Canvas>
         </Grid>
     </Grid>

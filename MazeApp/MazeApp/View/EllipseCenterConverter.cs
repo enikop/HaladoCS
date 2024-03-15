@@ -15,7 +15,7 @@ namespace MazeApp.View
         {
             if (values.Length == 3 && values[0] is int x && values[1] is int y && values[2] is int cellSize)
             {
-                return new Point(x*cellSize, y*cellSize);
+                return new Point(x*cellSize+cellSize/2.0, y*cellSize+cellSize/2.0);
             }
             return DependencyProperty.UnsetValue;
         }
