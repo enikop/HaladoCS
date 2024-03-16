@@ -2,19 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MazeApp.ViewModel;
 using MazeApp.Model;
-using System.Timers;
 
 namespace MazeApp.View
 {
@@ -51,16 +45,24 @@ namespace MazeApp.View
         public void UpdatePlayerKeyState(Key key, bool pressed)
         {
             // Update player 2 key states
-            if (key == Key.W) multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.North : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.North;
-            else if (key == Key.S) multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.South : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.South;
-            else if (key == Key.A) multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection   | Direction.West : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.West;
-            else if (key == Key.D) multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.East : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.East;
+            if (key == Key.W) 
+                multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.North : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.North;
+            else if (key == Key.S) 
+                multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.South : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.South;
+            else if (key == Key.A) 
+                multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.West : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.West;
+            else if (key == Key.D) 
+                multiplayerViewModel.PlayerTwoMoveDirection = pressed ? multiplayerViewModel.PlayerTwoMoveDirection | Direction.East : multiplayerViewModel.PlayerTwoMoveDirection & ~Direction.East;
 
             // Update player 1 key states
-            else if (key == Key.Up) multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.North : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.North;
-            else if (key == Key.Down) multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.South : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.South;
-            else if (key == Key.Left) multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.West : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.West;
-            else if (key == Key.Right) multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.East : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.East;
+            else if (key == Key.Up) 
+                multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.North : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.North;
+            else if (key == Key.Down) 
+                multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.South : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.South;
+            else if (key == Key.Left) 
+                multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.West : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.West;
+            else if (key == Key.Right) 
+                multiplayerViewModel.PlayerOneMoveDirection = pressed ? multiplayerViewModel.PlayerOneMoveDirection | Direction.East : multiplayerViewModel.PlayerOneMoveDirection & ~Direction.East;
         }
 
         private void DrawMaze()

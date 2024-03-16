@@ -74,6 +74,15 @@ namespace MazeApp.ViewModel
                 NotifyPropertyChanged(nameof(CurrentTheme));
             }
         }
+        public bool IsLimitedVisibility
+        {
+            get { return settings.IsLimitedVisibility; }
+            set
+            {
+                settings.IsLimitedVisibility = value;
+                NotifyPropertyChanged(nameof(IsLimitedVisibility));
+            }
+        }
         public AppTheme CurrentTheme
         {
             get

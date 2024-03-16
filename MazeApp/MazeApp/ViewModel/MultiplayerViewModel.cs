@@ -4,65 +4,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace MazeApp.ViewModel
 { 
-    public class MultiplayerViewModel: INotifyPropertyChanged
+    public class MultiplayerViewModel: GameViewModel
     {
-        private readonly Settings settings;
-        private readonly Maze mazeAlt;
         private readonly Player playerOne;
         private readonly Player playerTwo;
-        private int cellSize;
 
         private Timer aTimer;
-
-        public int CellSize
-        {
-            get { return cellSize; }
-            set
-            {
-                cellSize = value;
-                NotifyPropertyChanged(nameof(CellSize));
-                NotifyPropertyChanged(nameof(PlayerSize));
-                NotifyPropertyChanged(nameof(MazeTotalHeight));
-                NotifyPropertyChanged(nameof(MazeTotalWidth));
-            }
-        }
-
-        public int LightRadius
-        {
-            get { return CellSize*3; }
-        }
-
-        public int PlayerSize
-        {
-            get 
-            {
-                return CellSize - 10;
-            }
-        }
-
-        public int MazeTotalWidth
-        {
-            get
-            {
-                var a = CellSize * MazeWidth;
-                return CellSize * MazeWidth;
-            }
-        }
-
-        public int MazeTotalHeight
-        {
-            get
-            {
-                return CellSize * MazeHeight;
-            }
-        }
 
         public Direction PlayerOneMoveDirection
         {
@@ -126,54 +77,13 @@ namespace MazeApp.ViewModel
             }
         }
 
-        public GenerationAlgorithm Algorithm
+        public MultiplayerViewModel(Settings settings): base(settings)
         {
-            get
-            {
-                return settings.Algorithm;
-            }
-        }
-
-        public int MazeWidth
-        {
-            get
-            {
-                return settings.MazeWidth;
-            }
-        }
-
-        public int MazeHeight
-        {
-            get
-            {
-                return settings.MazeHeight;
-            }
-        }
-
-        public AppTheme CurrentTheme
-        {
-            get
-            {
-                return settings.CurrentTheme;
-            }
-        }
-
-        public MultiplayerViewModel(Settings settings)
-        {
-            this.settings = settings;
-            this.mazeAlt = new Maze(this.MazeWidth, this.MazeHeight, this.Algorithm);
             this.playerOne = new Player();
             this.playerTwo = new Player();
 
-            this.CellSize = 40;
-
             SetTimer();
 
-        }
-
-        public Direction GetCellData(int row, int col)
-        {
-            return mazeAlt.GetCell(row, col);
         }
 
         private void SetTimer()
@@ -196,8 +106,6 @@ namespace MazeApp.ViewModel
         public void UpdatePlayerPositions(Object? source, ElapsedEventArgs elapsedEventArgs) 
         {
             MovePlayers();
-            NotifyPropertyChanged(nameof(PlayerTwoX));
-            NotifyPropertyChanged(nameof(PlayerTwoY));
         }
 
         public void MovePlayers()
@@ -208,7 +116,7 @@ namespace MazeApp.ViewModel
                 if (playerOne.MoveDirection.HasFlag(dir))
                 {
                     (int, int) newPos = playerOne.PreviewStepOne(dir);
-                    if(IsWithinBoundaries(newPos.Item1, newPos.Item2) && !mazeAlt.IsWallBetween((PlayerOneY, PlayerOneX), (newPos.Item2, newPos.Item1)))
+                    if(IsWithinBoundaries(newPos.Item1, newPos.Item2) && !maze.IsWallBetween((PlayerOneY, PlayerOneX), (newPos.Item2, newPos.Item1)))
                     {
                         PlayerOneX = newPos.Item1;
                         PlayerOneY = newPos.Item2;
@@ -220,7 +128,7 @@ namespace MazeApp.ViewModel
                 if (playerTwo.MoveDirection.HasFlag(dir))
                 {
                     (int, int) newPos = playerTwo.PreviewStepOne(dir);
-                    if (IsWithinBoundaries(newPos.Item1, newPos.Item2) && !mazeAlt.IsWallBetween((PlayerTwoY, PlayerTwoX), (newPos.Item2, newPos.Item1)))
+                    if (IsWithinBoundaries(newPos.Item1, newPos.Item2) && !maze.IsWallBetween((PlayerTwoY, PlayerTwoX), (newPos.Item2, newPos.Item1)))
                     {
                         PlayerTwoX = newPos.Item1;
                         PlayerTwoY = newPos.Item2;
@@ -229,19 +137,6 @@ namespace MazeApp.ViewModel
                     }
                 }
             }
-        }
-
-        private bool IsWithinBoundaries(int x, int y)
-        {
-            if (x > -1 && x < MazeWidth && y > -1 && y < MazeHeight) return true;
-            return false;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

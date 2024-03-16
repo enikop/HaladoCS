@@ -11,8 +11,8 @@
     <Window.Resources>
         <local:ColourToBrushConverter x:Key="colourConverter"/>
         <local:RectangleConverter x:Key="rectConverter"/>
-        <local:ThicknessConverter x:Key="thicknessConverter"/>
         <local:EllipseCenterConverter x:Key="centerConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="visibilityConverter"/>
     </Window.Resources>
     <Grid Name="baseGrid" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}">
         <Grid.ColumnDefinitions>
@@ -35,7 +35,7 @@
             <Ellipse Grid.Row ="{Binding PlayerOneY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerOneX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{Binding CurrentTheme.PlayerOneColor, Converter={StaticResource colourConverter}}" Panel.ZIndex="1"/>
             <Ellipse Grid.Row ="{Binding PlayerTwoY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerTwoX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{Binding CurrentTheme.PlayerTwoColor, Converter={StaticResource colourConverter}}" Panel.ZIndex="1"/>
         </Grid>
-        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center">
+        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center" Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
             <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
                     <CombinedGeometry GeometryCombineMode="Exclude">
@@ -79,7 +79,7 @@
                 </Canvas.Clip>
             </Canvas>
         </Grid>
-        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center">
+        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center" Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
             <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
                     <CombinedGeometry GeometryCombineMode="Exclude">

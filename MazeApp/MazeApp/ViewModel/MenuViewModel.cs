@@ -32,8 +32,7 @@ namespace MazeApp.ViewModel
             this.settings = settings;
             OpenMultiplayerCommand = new OpenWindowCommand(typeof(MultiplayerWindow), settings);
             OpenSettingsCommand = new OpenWindowCommand(typeof(SettingsWindow), settings);
-            //TODO: Implement single player game
-            OpenSingleplayerCommand = new OpenWindowCommand(typeof(MultiplayerWindow), settings);
+            OpenSingleplayerCommand = new OpenWindowCommand(typeof(SingleplayerWindow), settings);
             CloseCommand = new CloseWindowCommand();
 
             //Subscribe to property changes in settings

@@ -20,6 +20,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row ="0" Orientation="Vertical" VerticalAlignment="Center" Margin="10">
@@ -44,6 +45,10 @@
             <TextBox x:Name="mazeHeightTextBox" Margin="0,5" Text="{Binding MazeHeight, Mode=TwoWay}"/>
         </StackPanel>
 
-        <Button Grid.Row ="4" Content="Save" Command="{Binding UpdateSettingsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" HorizontalAlignment="Center" Margin="10"/>
+        <StackPanel Grid.Row ="4" Orientation="Vertical" VerticalAlignment="Center" Margin="10">
+            <CheckBox x:Name="limitVisibilityCheckbox" Margin="0,5" Foreground="{Binding CurrentTheme.MainForegroundColor, Converter={StaticResource colourConverter}}" Content="Limited visibility mode" IsChecked="{Binding IsLimitedVisibility, Mode=TwoWay}"/>
+        </StackPanel>
+
+        <Button Grid.Row ="5" Content="Save" Command="{Binding UpdateSettingsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" HorizontalAlignment="Center" Margin="10"/>
     </Grid>
 </Window>

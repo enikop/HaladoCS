@@ -33,10 +33,5 @@ namespace MazeApp.View
             menuViewModel = new MenuViewModel(settings);
             DataContext = this.menuViewModel;
         }
-
-        private void Quit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
     }
 }

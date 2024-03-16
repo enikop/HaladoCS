@@ -13,6 +13,20 @@ namespace MazeApp.Model
         private List<AppTheme> themes;
         private (int, int) mazeDimensions;
         private GenerationAlgorithm algorithm;
+        private bool isLimitedVisibility;
+
+        public bool IsLimitedVisibility { 
+            get
+            {
+                return isLimitedVisibility;
+            }
+            set
+            {
+                isLimitedVisibility = value;
+                NotifyPropertyChanged(nameof(IsLimitedVisibility));
+            }
+        }
+
         public GenerationAlgorithm Algorithm
         {
             get
@@ -116,6 +130,7 @@ namespace MazeApp.Model
             this.ColourTheme = ColourTheme.Dark;
             this.MazeHeight = 16;
             this.MazeWidth = 16;
+            this.IsLimitedVisibility = true;
             this.themes = themes;
         }
 
@@ -125,6 +140,7 @@ namespace MazeApp.Model
             this.ColourTheme = settings.ColourTheme;
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
+            this.IsLimitedVisibility = settings.IsLimitedVisibility;
             this.themes = settings.themes;
         }
 
@@ -134,6 +150,7 @@ namespace MazeApp.Model
             this.ColourTheme = settings.ColourTheme;
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
+            this.IsLimitedVisibility = settings.IsLimitedVisibility;
             this.themes = settings.themes;
         }
 
