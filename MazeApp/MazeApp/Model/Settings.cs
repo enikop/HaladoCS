@@ -10,7 +10,6 @@ namespace MazeApp.Model
 {
     public class Settings: INotifyPropertyChanged
     {
-        private List<AppTheme> themes;
         private (int, int) mazeDimensions;
         private GenerationAlgorithm algorithm;
         private bool isLimitedVisibility;
@@ -53,7 +52,7 @@ namespace MazeApp.Model
             }
             set
             {
-                if (value > 1 && value <= 30)
+                if (value > 1 && value <= 20)
                 {
                     //If algorithm is tesselation, set both dimensions if value is the power of 2, otherwise return
                     if (this.Algorithm == GenerationAlgorithm.Tesselation && (value & (value - 1)) != 0)
@@ -78,7 +77,7 @@ namespace MazeApp.Model
             }
             set
             {
-                if (value > 1 && value <= 30)
+                if (value > 1 && value <= 20)
                 {
                     //If algorithm is tesselation, set both dimensions if value is the power of 2, otherwise return
                     if (this.Algorithm == GenerationAlgorithm.Tesselation && (value & (value - 1)) != 0)
@@ -94,44 +93,15 @@ namespace MazeApp.Model
                 }
             }
         }
+        public ColourTheme ColourTheme { get; set; }
 
-        private ColourTheme colourTheme;
-        public ColourTheme ColourTheme
-        {
-            get
-            {
-                return colourTheme;
-            }
-            set
-            {
-                colourTheme = value;
-                NotifyPropertyChanged(nameof(CurrentTheme));
-            }
-        }
-
-        public AppTheme CurrentTheme
-        {
-            get
-            {
-                foreach (var theme in themes)
-                {
-                    if (this.ColourTheme == theme.ColourTheme)
-                    {
-                        return theme;
-                    }
-                }
-                throw new Exception("Faulty theme definitions");
-            }
-        }
-
-        public Settings(List<AppTheme> themes)
+        public Settings()
         {
             this.Algorithm = GenerationAlgorithm.Wilson;
             this.ColourTheme = ColourTheme.Dark;
             this.MazeHeight = 16;
             this.MazeWidth = 16;
             this.IsLimitedVisibility = true;
-            this.themes = themes;
         }
 
         public Settings(Settings settings)
@@ -141,7 +111,6 @@ namespace MazeApp.Model
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
             this.IsLimitedVisibility = settings.IsLimitedVisibility;
-            this.themes = settings.themes;
         }
 
         public void CopyFrom(Settings settings)
@@ -151,7 +120,6 @@ namespace MazeApp.Model
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
             this.IsLimitedVisibility = settings.IsLimitedVisibility;
-            this.themes = settings.themes;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

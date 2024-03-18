@@ -8,21 +8,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using MazeApp.Model;
-using MazeApp.View;
+using MazeApp.Helpers;
 
 namespace MazeApp.ViewModel
 {
     public class MenuViewModel: INotifyPropertyChanged
     {
         private readonly Settings settings;
-
-        public AppTheme CurrentTheme
-        {
-            get
-            {
-               return settings.CurrentTheme;
-            }
-        }
         public ICommand OpenMultiplayerCommand { get; set; }
         public ICommand OpenSingleplayerCommand { get; set; }
         public ICommand OpenSettingsCommand { get; set; }
@@ -34,18 +26,6 @@ namespace MazeApp.ViewModel
             OpenSettingsCommand = new OpenWindowCommand(typeof(SettingsWindow), settings);
             OpenSingleplayerCommand = new OpenWindowCommand(typeof(SingleplayerWindow), settings);
             CloseCommand = new CloseWindowCommand();
-
-            //Subscribe to property changes in settings
-            this.settings.PropertyChanged += Settings_PropertyChanged;
-        }
-
-        private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(settings.CurrentTheme))
-            {
-                // Notify that CurrentTheme property has changed
-                NotifyPropertyChanged(nameof(CurrentTheme));
-            }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
 

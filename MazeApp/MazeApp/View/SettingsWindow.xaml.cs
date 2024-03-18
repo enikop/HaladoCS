@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using MazeApp.ViewModel;
 using MazeApp.Model;
 
-namespace MazeApp.View
+namespace MazeApp.Helpers
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
@@ -28,10 +28,15 @@ namespace MazeApp.View
         {
             InitializeComponent();
             settingsViewModel = new SettingsViewModel(settings);
-            algorithmComboBox.ItemsSource = settingsViewModel.GenerationAlgorithmOptions;
-            colourThemeComboBox.ItemsSource = settingsViewModel.ColourThemeOptions;
 
             DataContext = this.settingsViewModel;
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            settingsViewModel.ResetTheme();
+            base.OnClosed(e);
+
         }
     }
 }

@@ -46,7 +46,6 @@ namespace MazeApp.ViewModel
         {
             get
             {
-                var a = CellSize * MazeWidth;
                 return CellSize * MazeWidth;
             }
         }
@@ -90,14 +89,6 @@ namespace MazeApp.ViewModel
             {
                 settings.IsLimitedVisibility = value;
                 NotifyPropertyChanged(nameof(IsLimitedVisibility));
-            }
-        }
-
-        public AppTheme CurrentTheme
-        {
-            get
-            {
-                return settings.CurrentTheme;
             }
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace MazeApp.View
+namespace MazeApp.Helpers
 {
     public class RectangleConverter : IMultiValueConverter
     {

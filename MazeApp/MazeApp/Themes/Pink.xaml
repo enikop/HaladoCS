@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="BackgroundColor">#ff9bd2</Color>
+    <Color x:Key="ForegroundColor">#402b3a</Color>
+    <Color x:Key="SecondaryForegroundColor">#4a814a</Color>
+    <Color x:Key="TertiaryForegroundColor">#f8f4ec</Color>
+    <Color x:Key="PlayerOneColor">#d63484</Color>
+    <Color x:Key="PlayerTwoColor">#4a814a</Color>
+    <Color x:Key="ButtonTextColor">#ffe6f2</Color>
+    <Color x:Key="ActiveButtonTextColor">#e5ffe5</Color>
+
+
+    <SolidColorBrush Color="{StaticResource BackgroundColor}" x:Key="BackgroundBrush"/>
+    <SolidColorBrush Color="{StaticResource ForegroundColor}" x:Key="ForegroundBrush"/>
+    <SolidColorBrush Color="{StaticResource SecondaryForegroundColor}" x:Key="SecondaryForegroundBrush"/>
+    <SolidColorBrush Color="{StaticResource TertiaryForegroundColor}" x:Key="TertiaryForegroundBrush"/>
+    <SolidColorBrush Color="{StaticResource PlayerOneColor}" x:Key="PlayerOneBrush"/>
+    <SolidColorBrush Color="{StaticResource PlayerTwoColor}" x:Key="PlayerTwoBrush"/>
+    <SolidColorBrush Color="{StaticResource ButtonTextColor}" x:Key="ButtonTextBrush"/>
+    <SolidColorBrush Color="{StaticResource ActiveButtonTextColor}" x:Key="ActiveButtonTextBrush"/>
+</ResourceDictionary>

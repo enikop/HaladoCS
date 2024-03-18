@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 using MazeApp.ViewModel;
 using MazeApp.Model;
 
-namespace MazeApp.View
+namespace MazeApp.Helpers
 {
     /// <summary>
     /// Interaction logic for MultiplayerWindow.xaml
@@ -81,7 +81,6 @@ namespace MazeApp.View
                         mainGrid.ColumnDefinitions.Add(colDef);
                     }
                     Canvas canvas = new Canvas();
-                    canvas.Background = new SolidColorBrush(this.multiplayerViewModel.CurrentTheme.BackgroundColor);
                     canvas.Width = multiplayerViewModel.CellSize;
                     canvas.Height = multiplayerViewModel.CellSize;
                     DrawCell(canvas, i, j);
@@ -111,7 +110,7 @@ namespace MazeApp.View
         private void DrawCell(Canvas canvas, int row, int col)
         {
             Direction sides = multiplayerViewModel.GetCellData(row, col);
-            SolidColorBrush brush = new SolidColorBrush(multiplayerViewModel.CurrentTheme.MainForegroundColor);
+            SolidColorBrush brush = (SolidColorBrush)FindResource("ForegroundBrush");
             if (sides.HasFlag(Direction.North))
             {
                 Line line = new Line

@@ -12,4 +12,25 @@ namespace MazeApp.Model
         Light,
         Pink
     }
+
+    public class ColourThemeHandler
+    {
+        public static Uri GetThemeUri(ColourTheme themeEnum)
+        {
+            string uri = "Themes/Dark.xaml";
+            switch (themeEnum)
+            {
+                case ColourTheme.Dark:
+                    uri = "Themes/Dark.xaml";
+                    break;
+                case ColourTheme.Light:
+                    uri = "Themes/Light.xaml";
+                    break;
+                case ColourTheme.Pink:
+                    uri = "Themes/Pink.xaml";
+                    break;
+            }
+            return new Uri(uri, UriKind.Relative);
+        }
+    }
 }

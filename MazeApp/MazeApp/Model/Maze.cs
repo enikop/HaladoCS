@@ -357,7 +357,7 @@ namespace MazeApp.Model
             List<(int, int)> visited = new();
             List<(int, int)> toBeVisited = Enumerable.Range(0, Height).SelectMany(i => Enumerable.Range(0, Width).Select(j => (i, j))).ToList();
 
-            (int, int) goal = (rand.Next(Width), rand.Next(Height));
+            (int, int) goal = (rand.Next(Height), rand.Next(Width));
             toBeVisited.Remove(goal);
             maze.Add(goal);
 

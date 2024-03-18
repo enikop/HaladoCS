@@ -1,49 +1,67 @@
-﻿<Window x:Class="MazeApp.View.SingleplayerWindow"
+﻿<Window x:Class="MazeApp.Helpers.SingleplayerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MazeApp.View"
+        xmlns:local="clr-namespace:MazeApp.Helpers"
         mc:Ignorable="d"
         Title="SingleplayerWindow"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
     <Window.Resources>
-        <local:ColourToBrushConverter x:Key="colourConverter"/>
         <local:RectangleConverter x:Key="rectConverter"/>
         <local:EllipseCenterConverter x:Key="centerConverter"/>
         <local:BooleanToVisibilityConverter x:Key="visibilityConverter"/>
     </Window.Resources>
-    <Grid Name="baseGrid" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}">
+    <Grid Name="baseGrid" Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50px"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10px"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row ="0" Grid.Column="0" HorizontalAlignment="Center" Content="A-Maze-Ing" FontSize="20pt" FontFamily="Arial Black" Name="titleLabel" >
+        <Label Grid.Row ="0" Grid.Column="0" HorizontalAlignment="Center" Content="A-Maze-Ing" FontSize="42pt" FontFamily="Stencil">
             <Label.Foreground>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{Binding CurrentTheme.PlayerTwoColor, UpdateSourceTrigger=PropertyChanged}" Offset="0.0" />
-                    <GradientStop Color="{Binding CurrentTheme.PlayerOneColor, UpdateSourceTrigger=PropertyChanged}" Offset="1.0" />
+                    <GradientStop Color="{DynamicResource PlayerTwoColor}" Offset="0.0" />
+                    <GradientStop Color="{DynamicResource PlayerOneColor}" Offset="1.0" />
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center" Name="mainGrid">
-            <Ellipse Grid.Row ="{Binding PlayerOneY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerOneX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{Binding CurrentTheme.PlayerOneColor, Converter={StaticResource colourConverter}}" Panel.ZIndex="1"/>
+        <Border Grid.Column="0" Grid.Row="0" BorderThickness="0 0 0 4">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle StrokeDashArray="1 2" StrokeThickness="4"
+                  Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+                  Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
+                            <Rectangle.Stroke>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="{DynamicResource PlayerTwoColor}" Offset="0.0" />
+                                    <GradientStop Color="{DynamicResource PlayerOneColor}" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Rectangle.Stroke>
+                        </Rectangle>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+        </Border>
+        <Grid Grid.Row ="2" Grid.Column="0" HorizontalAlignment="Center" Name="mainGrid">
+            <Ellipse Grid.Row ="{Binding PlayerOneY, UpdateSourceTrigger=PropertyChanged}" Grid.Column="{Binding PlayerOneX, UpdateSourceTrigger=PropertyChanged}" Width="{Binding PlayerSize}" Height="{Binding PlayerSize}" Fill="{DynamicResource PlayerOneBrush}" Panel.ZIndex="1"/>
         </Grid>
-        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center" Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
-            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="{Binding CurrentTheme.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource colourConverter}}" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Grid Grid.Row ="2" Grid.Column="0" HorizontalAlignment="Center" Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
+            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="{DynamicResource BackgroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
                     <CombinedGeometry GeometryCombineMode="Exclude">
                         <CombinedGeometry.Geometry1>
                             <RectangleGeometry>
                                 <RectangleGeometry.Rect>
                                     <MultiBinding Converter="{StaticResource rectConverter}">
-                                        <Binding Path="MazeTotalHeight"/>
                                         <Binding Path="MazeTotalWidth"/>
+                                        <Binding Path="MazeTotalHeight"/>
                                     </MultiBinding>
                                 </RectangleGeometry.Rect>
                             </RectangleGeometry>
@@ -63,14 +81,14 @@
                 </Canvas.Clip>
             </Canvas>
         </Grid>
-        <Grid Grid.Row ="1" Grid.Column="0" HorizontalAlignment="Center">
+        <Grid Grid.Row ="2" Grid.Column="0" HorizontalAlignment="Center">
             <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
                     <RectangleGeometry>
                         <RectangleGeometry.Rect>
                             <MultiBinding Converter="{StaticResource rectConverter}">
-                                <Binding Path="MazeTotalHeight"/>
                                 <Binding Path="MazeTotalWidth"/>
+                                <Binding Path="MazeTotalHeight"/>
                             </MultiBinding>
                         </RectangleGeometry.Rect>
                     </RectangleGeometry>
@@ -79,7 +97,7 @@
                     <Path.Fill>
                         <RadialGradientBrush>
                             <GradientStop Color="Transparent" Offset="0.7"/>
-                            <GradientStop Color="{Binding CurrentTheme.BackgroundColor}" Offset="1"/>
+                            <GradientStop Color="{DynamicResource BackgroundColor}" Offset="1"/>
                         </RadialGradientBrush>
                     </Path.Fill>
                     <Path.Data>
@@ -94,7 +112,7 @@
                         </EllipseGeometry>
                     </Path.Data>
                 </Path>
-                <Path Fill="{Binding CurrentTheme.PlayerTwoColor, Converter={StaticResource colourConverter}}">
+                <Path Fill="{DynamicResource PlayerTwoBrush}">
                     <Path.Data>
                         <EllipseGeometry RadiusX="{Binding PrizeSize}" RadiusY="{Binding PrizeSize}">
                             <EllipseGeometry.Center>

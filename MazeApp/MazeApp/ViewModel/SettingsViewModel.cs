@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using MazeApp.Helpers;
 
 namespace MazeApp.ViewModel
 {
@@ -71,7 +72,7 @@ namespace MazeApp.ViewModel
             set
             {
                 settings.ColourTheme = value;
-                NotifyPropertyChanged(nameof(CurrentTheme));
+                ThemeHandler.ChangeTheme(ColourThemeHandler.GetThemeUri(settings.ColourTheme));
             }
         }
         public bool IsLimitedVisibility
@@ -83,14 +84,6 @@ namespace MazeApp.ViewModel
                 NotifyPropertyChanged(nameof(IsLimitedVisibility));
             }
         }
-        public AppTheme CurrentTheme
-        {
-            get
-            {
-                return settings.CurrentTheme;
-            }
-        }
-
         public IEnumerable<GenerationAlgorithm> GenerationAlgorithmOptions
         {
             get
@@ -105,6 +98,11 @@ namespace MazeApp.ViewModel
             {
                 return Enum.GetValues(typeof(ColourTheme)).Cast<ColourTheme>();
             }
+        }
+
+        public void ResetTheme()
+        {
+            ColourTheme = originalSettings.ColourTheme;
         }
 
         private void SaveSettings()
@@ -152,7 +150,7 @@ namespace MazeApp.ViewModel
             public void Execute(object? parameter)
             {
                 settingsViewModel.SaveSettings();
-                if(parameter != null && parameter is Window) ((Window)parameter).Close();
+                if (parameter != null && parameter is Window) ((Window)parameter).Close();
             }
         }
     }

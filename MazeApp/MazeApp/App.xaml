@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:MazeApp"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Themes/Dark.xaml"/>
     </Application.Resources>
 </Application>

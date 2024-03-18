@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MazeApp.View
+namespace MazeApp.Helpers
 {
     /// <summary>
     /// Interaction logic for SingleplayerWindow.xaml
@@ -74,7 +74,6 @@ namespace MazeApp.View
                         mainGrid.ColumnDefinitions.Add(colDef);
                     }
                     Canvas canvas = new Canvas();
-                    canvas.Background = new SolidColorBrush(this.singleplayerViewModel.CurrentTheme.BackgroundColor);
                     canvas.Width = singleplayerViewModel.CellSize;
                     canvas.Height = singleplayerViewModel.CellSize;
                     DrawCell(canvas, i, j);
@@ -104,7 +103,7 @@ namespace MazeApp.View
         private void DrawCell(Canvas canvas, int row, int col)
         {
             Direction sides = singleplayerViewModel.GetCellData(row, col);
-            SolidColorBrush brush = new SolidColorBrush(singleplayerViewModel.CurrentTheme.MainForegroundColor);
+            SolidColorBrush brush = (SolidColorBrush)FindResource("ForegroundBrush");
             if (sides.HasFlag(Direction.North))
             {
                 Line line = new Line
