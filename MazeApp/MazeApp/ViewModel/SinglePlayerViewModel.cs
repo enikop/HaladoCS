@@ -90,7 +90,7 @@ namespace MazeApp.ViewModel
 
         private void SetTimer()
         {
-            aTimer = new Timer(120);
+            aTimer = new Timer(80);
             aTimer.Elapsed += UpdatePlayerPositions;
             aTimer.AutoReset = true;
             aTimer.Enabled = true;

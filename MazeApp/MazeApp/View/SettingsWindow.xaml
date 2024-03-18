@@ -11,45 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Topmost="True">
     <Window.Resources>
-        <Style x:Key="InputLabelStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="10pt"/>
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
-        </Style>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{DynamicResource PlayerTwoBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource PlayerTwoBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource ButtonTextBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" Padding="5,5">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource PlayerOneBrush}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource PlayerOneBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource ActiveButtonTextBrush}"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource PlayerOneBrush}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource PlayerOneBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource ActiveButtonTextBrush}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary Source="/UIElements/UIElements.xaml"/>
     </Window.Resources>
     <Grid Name="baseGrid" Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
@@ -60,14 +22,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row ="0" Grid.Column="0" HorizontalAlignment="Center" Content="A-Maze-Ing" FontSize="42pt" FontFamily="Stencil">
-            <Label.Foreground>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{DynamicResource PlayerTwoColor}" Offset="0.0" />
-                    <GradientStop Color="{DynamicResource PlayerOneColor}" Offset="1.0" />
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
+        <Label Grid.Row ="0" Grid.Column="0" Style="{DynamicResource HeaderLabelStyle}"/>
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="0 0 0 4">
             <Border.BorderBrush>
                 <VisualBrush>

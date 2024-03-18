@@ -9,9 +9,35 @@
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
     <Window.Resources>
-        <local:RectangleConverter x:Key="rectConverter"/>
-        <local:EllipseCenterConverter x:Key="centerConverter"/>
-        <local:BooleanToVisibilityConverter x:Key="visibilityConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UIElements/UIElements.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <local:RectangleConverter x:Key="rectConverter"/>
+            <local:EllipseCenterConverter x:Key="centerConverter"/>
+            <local:BooleanToVisibilityConverter x:Key="visibilityConverter"/>
+
+            <RectangleGeometry x:Key="MazeGeometry" x:Shared="true">
+                <RectangleGeometry.Rect>
+                    <MultiBinding Converter="{StaticResource rectConverter}">
+                        <Binding Path="MazeTotalWidth"/>
+                        <Binding Path="MazeTotalHeight"/>
+                    </MultiBinding>
+                </RectangleGeometry.Rect>
+            </RectangleGeometry>
+
+            <EllipseGeometry x:Key="PlayerLightGeometry" x:Shared="true" RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
+                <EllipseGeometry.Center>
+                    <MultiBinding Converter="{StaticResource centerConverter}">
+                        <Binding Path="PlayerOneX"/>
+                        <Binding Path="PlayerOneY"/>
+                        <Binding Path="CellSize"/>
+                    </MultiBinding>
+                </EllipseGeometry.Center>
+            </EllipseGeometry>
+            
+        </ResourceDictionary>
     </Window.Resources>
     <Grid Name="baseGrid" Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
@@ -23,14 +49,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row ="0" Grid.Column="0" HorizontalAlignment="Center" Content="A-Maze-Ing" FontSize="42pt" FontFamily="Stencil">
-            <Label.Foreground>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{DynamicResource PlayerTwoColor}" Offset="0.0" />
-                    <GradientStop Color="{DynamicResource PlayerOneColor}" Offset="1.0" />
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
+        <Label Grid.Row ="0" Grid.Column="0" Style="{DynamicResource HeaderLabelStyle}"/>
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="0 0 0 4">
             <Border.BorderBrush>
                 <VisualBrush>
@@ -55,62 +74,22 @@
         <Grid Grid.Row ="2" Grid.Column="0" HorizontalAlignment="Center" Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
             <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="{DynamicResource BackgroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
-                    <CombinedGeometry GeometryCombineMode="Exclude">
-                        <CombinedGeometry.Geometry1>
-                            <RectangleGeometry>
-                                <RectangleGeometry.Rect>
-                                    <MultiBinding Converter="{StaticResource rectConverter}">
-                                        <Binding Path="MazeTotalWidth"/>
-                                        <Binding Path="MazeTotalHeight"/>
-                                    </MultiBinding>
-                                </RectangleGeometry.Rect>
-                            </RectangleGeometry>
-                        </CombinedGeometry.Geometry1>
-                        <CombinedGeometry.Geometry2>
-                            <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
-                                <EllipseGeometry.Center>
-                                    <MultiBinding Converter="{StaticResource centerConverter}">
-                                        <Binding Path="PlayerOneX"/>
-                                        <Binding Path="PlayerOneY"/>
-                                        <Binding Path="CellSize"/>
-                                    </MultiBinding>
-                                </EllipseGeometry.Center>
-                            </EllipseGeometry>
-                        </CombinedGeometry.Geometry2>
-                    </CombinedGeometry>
+                    <CombinedGeometry GeometryCombineMode="Exclude" Geometry1="{StaticResource MazeGeometry}" Geometry2="{DynamicResource PlayerLightGeometry}"/>
                 </Canvas.Clip>
             </Canvas>
         </Grid>
         <Grid Grid.Row ="2" Grid.Column="0" HorizontalAlignment="Center">
             <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Canvas.Clip>
-                    <RectangleGeometry>
-                        <RectangleGeometry.Rect>
-                            <MultiBinding Converter="{StaticResource rectConverter}">
-                                <Binding Path="MazeTotalWidth"/>
-                                <Binding Path="MazeTotalHeight"/>
-                            </MultiBinding>
-                        </RectangleGeometry.Rect>
-                    </RectangleGeometry>
+                    <CombinedGeometry Geometry1="{StaticResource MazeGeometry}"/>
                 </Canvas.Clip>
-                <Path Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
+                <Path Data="{DynamicResource PlayerLightGeometry}" Visibility="{Binding IsLimitedVisibility, Converter={StaticResource visibilityConverter}}">
                     <Path.Fill>
                         <RadialGradientBrush>
                             <GradientStop Color="Transparent" Offset="0.7"/>
                             <GradientStop Color="{DynamicResource BackgroundColor}" Offset="1"/>
                         </RadialGradientBrush>
                     </Path.Fill>
-                    <Path.Data>
-                        <EllipseGeometry RadiusX="{Binding LightRadius}" RadiusY="{Binding LightRadius}">
-                            <EllipseGeometry.Center>
-                                <MultiBinding Converter="{StaticResource centerConverter}">
-                                    <Binding Path="PlayerOneX"/>
-                                    <Binding Path="PlayerOneY"/>
-                                    <Binding Path="CellSize"/>
-                                </MultiBinding>
-                            </EllipseGeometry.Center>
-                        </EllipseGeometry>
-                    </Path.Data>
                 </Path>
                 <Path Fill="{DynamicResource PlayerTwoBrush}">
                     <Path.Data>
