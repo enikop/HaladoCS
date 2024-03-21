@@ -16,6 +16,15 @@
         </Setter>
     </Style>
 
+    <Style x:Key="timerStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="26pt"/>
+        <Setter Property="FontFamily" Value="Stencil"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="5 0"/>
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+    </Style>
+
     <Style x:Key="InputLabelStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="10pt"/>

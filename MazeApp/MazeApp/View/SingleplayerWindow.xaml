@@ -1,9 +1,9 @@
-﻿<Window x:Class="MazeApp.Helpers.SingleplayerWindow"
+﻿<Window x:Class="MazeApp.View.SingleplayerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MazeApp.Helpers"
+        xmlns:local="clr-namespace:MazeApp.View"
         mc:Ignorable="d"
         Title="SingleplayerWindow"
         WindowStartupLocation="CenterScreen"
@@ -46,6 +46,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10px"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
@@ -106,5 +107,8 @@
                 </Path>
             </Canvas>
         </Grid>
+        <Label Grid.Row="2" Style="{StaticResource timerStyle}" Content="{Binding ElapsedTime, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Grid.Row="2" Style="{StaticResource timerStyle}" Content="New High Score!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+
     </Grid>
 </Window>

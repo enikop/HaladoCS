@@ -1,15 +1,12 @@
-﻿using System;
-using MazeApp.Model;
+﻿using MazeApp.Model;
+using MazeApp.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
-using MazeApp.Helpers;
 
 namespace MazeApp.ViewModel
 {
@@ -63,7 +60,7 @@ namespace MazeApp.ViewModel
                NotifyPropertyChanged(nameof(MazeHeight));
             }
         }
-        public ColourTheme ColourTheme
+        public Theme ColourTheme
         {
             get
             {
@@ -72,7 +69,7 @@ namespace MazeApp.ViewModel
             set
             {
                 settings.ColourTheme = value;
-                ThemeHandler.ChangeTheme(ColourThemeHandler.GetThemeUri(settings.ColourTheme));
+                ThemeManager.ChangeTheme(settings.ColourTheme);
             }
         }
         public bool IsLimitedVisibility
@@ -84,6 +81,19 @@ namespace MazeApp.ViewModel
                 NotifyPropertyChanged(nameof(IsLimitedVisibility));
             }
         }
+
+        public string PlayerName
+        {
+            get
+            {
+                return settings.PlayerName;
+            }
+            set
+            {
+                settings.PlayerName = value;
+                NotifyPropertyChanged(nameof(PlayerName));
+            }
+        }
         public IEnumerable<GenerationAlgorithm> GenerationAlgorithmOptions
         {
             get
@@ -92,11 +102,11 @@ namespace MazeApp.ViewModel
             }
         }
 
-        public IEnumerable<ColourTheme> ColourThemeOptions
+        public IEnumerable<Theme> ColourThemeOptions
         {
             get
             {
-                return Enum.GetValues(typeof(ColourTheme)).Cast<ColourTheme>();
+                return Enum.GetValues(typeof(Theme)).Cast<Theme>();
             }
         }
 

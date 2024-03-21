@@ -1,27 +1,42 @@
 ﻿using MazeApp.Model;
+using MazeApp.Model.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Timers;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace MazeApp.ViewModel
 {
     public class SingleplayerViewModel: GameViewModel
     {
         private readonly Player playerOne;
-        private Timer aTimer;
-        private (int, int) prizePosition;
+        private Position prizePosition;
+        private DispatcherTimer dispatcherTimer;
+        private int gameTime;
+        private bool isHighScore;
+
+        public bool IsHighScore
+        {
+            get
+            {
+                return isHighScore;
+            }
+            set
+            {
+                isHighScore = value;
+                NotifyPropertyChanged(nameof(IsHighScore));
+            }
+        }
 
         public int PrizeX {
             get
             {
-                return prizePosition.Item1;
+                return prizePosition.Column;
             }
             set
             {
-                prizePosition.Item1 = value;
+                prizePosition.Column = value;
                 NotifyPropertyChanged(nameof(PrizeX));
             }
         }
@@ -37,11 +52,11 @@ namespace MazeApp.ViewModel
         {
             get
             {
-                return prizePosition.Item2;
+                return prizePosition.Row;
             }
             set
             {
-                prizePosition.Item2 = value;
+                prizePosition.Row = value;
                 NotifyPropertyChanged(nameof(PrizeY));
             }
         }
@@ -61,73 +76,89 @@ namespace MazeApp.ViewModel
 
         public int PlayerOneX
         {
-            get { return playerOne.X; }
+            get { return playerOne.Position.Column; }
             set
             {
-                playerOne.X = value;
+                playerOne.Position.Column = value;
                 NotifyPropertyChanged(nameof(PlayerOneX));
             }
         }
 
         public int PlayerOneY
         {
-            get { return playerOne.Y; }
+            get { return playerOne.Position.Row; }
             set
             {
-                playerOne.Y = value;
+                playerOne.Position.Row = value;
                 NotifyPropertyChanged(nameof(PlayerOneY));
+            }
+        }
+
+        public int ElapsedTime { 
+            get
+            {
+                return gameTime;
+            }
+            set
+            {
+                gameTime = value;
+                NotifyPropertyChanged(nameof(ElapsedTime));
             }
         }
 
         public SingleplayerViewModel(Settings settings) : base(settings)
         {
             this.playerOne = new Player();
-            this.PrizeX = 0;
-            this.PrizeY = 0;
+            this.prizePosition = new Position(0, 0);
+            this.IsHighScore = false;
+            ElapsedTime = 0;
+            dispatcherTimer = new();
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Tick += new EventHandler((s,e) => increaseTimer());
+            dispatcherTimer.Start();
             SetTimer();
 
         }
 
-        private void SetTimer()
+        private void increaseTimer()
         {
-            aTimer = new Timer(80);
-            aTimer.Elapsed += UpdatePlayerPositions;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
+            ElapsedTime++;
         }
 
-        public void DisposeTimer()
+        public override void UpdatePlayerPositions()
         {
-            if (aTimer != null)
-            {
-                aTimer.Stop();
-                aTimer.Dispose();
-            }
+            MovePlayer();
         }
 
-        public void UpdatePlayerPositions(Object? source, ElapsedEventArgs elapsedEventArgs)
-        {
-            MovePlayers();
-        }
-
-        public void MovePlayers()
+        public void MovePlayer()
         {
             Direction[] dirs = new Direction[] { Direction.North, Direction.South, Direction.West, Direction.East };
             foreach (Direction dir in dirs)
             {
                 if (playerOne.MoveDirection.HasFlag(dir))
                 {
-                    (int, int) newPos = playerOne.PreviewStepOne(dir);
-                    if (IsWithinBoundaries(newPos.Item1, newPos.Item2) && !maze.IsWallBetween((PlayerOneY, PlayerOneX), (newPos.Item2, newPos.Item1)))
+                    Position newPos = playerOne.PreviewStepOne(dir);
+                    if (IsWithinBoundaries(newPos) && !maze.IsWallBetween(playerOne.Position, newPos))
                     {
-                        PlayerOneX = newPos.Item1;
-                        PlayerOneY = newPos.Item2;
-                        NotifyPropertyChanged(nameof(PlayerOneX));
-                        NotifyPropertyChanged(nameof(PlayerOneY));
+                        PlayerOneX = newPos.Column;
+                        PlayerOneY = newPos.Row;
                     }
-
+                    if (playerOne.Position.Equals(prizePosition))
+                    {
+                        dispatcherTimer.Stop();
+                        if (IsNewHighScore())
+                        {
+                            IsHighScore = true;
+                        }
+                    }
                 }
             }
+        }
+
+        private bool IsNewHighScore()
+        {
+            return ScoreLogger.LogScore("scores.json", 
+                new Result(PlayerName, ElapsedTime, Algorithm, MazeWidth, MazeHeight, IsLimitedVisibility));
         }
     }
 }

@@ -1,20 +1,21 @@
 ﻿using MazeApp.Model;
+using MazeApp.Model.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Threading;
 
 namespace MazeApp.ViewModel
 {
-    public class GameViewModel : INotifyPropertyChanged
+    public abstract class GameViewModel : INotifyPropertyChanged
     {
         private readonly Settings settings;
         protected readonly Maze maze;
         private int cellSize;
+        private readonly int loopTime = 90;
+
+        private Timer refreshTimer;
 
         public int CellSize
         {
@@ -92,25 +93,52 @@ namespace MazeApp.ViewModel
             }
         }
 
+        public string PlayerName
+        {
+            get
+            {
+                return settings.PlayerName;
+            }
+        }
+
         public GameViewModel(Settings settings)
         {
             this.settings = settings;
             this.maze = new Maze(this.MazeWidth, this.MazeHeight, this.Algorithm);
-
-            this.CellSize = 40;
-
-
+            //Cell size is proportionally changed with the largest dimension of the maze
+            //It's 40 at a 16 grid length, but it does not grow beyond 60
+            this.CellSize = (int)Math.Floor(Math.Min(60, 40 * 16.0 / Math.Max(this.MazeWidth, this.MazeHeight)));
+            refreshTimer = new Timer(loopTime);
         }
 
-        protected bool IsWithinBoundaries(int x, int y)
+        protected void SetTimer()
         {
-            if (x > -1 && x < MazeWidth && y > -1 && y < MazeHeight) return true;
+            refreshTimer = new Timer(loopTime);
+            refreshTimer.Elapsed += new ElapsedEventHandler( (s, e) => UpdatePlayerPositions());
+            refreshTimer.AutoReset = true;
+            refreshTimer.Enabled = true;
+        }
+
+        public void DisposeTimer()
+        {
+            if (refreshTimer != null)
+            {
+                refreshTimer.Stop();
+                refreshTimer.Dispose();
+            }
+        }
+
+        public abstract void UpdatePlayerPositions();
+
+        protected bool IsWithinBoundaries(Position position)
+        {
+            if (position.Column > -1 && position.Column < MazeWidth && position.Row > -1 && position.Row < MazeHeight) return true;
             return false;
         }
 
-        public Direction GetCellData(int row, int col)
+        public Direction GetCellData(Position pos)
         {
-            return maze.GetCell(row, col);
+            return maze.GetCell(pos);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

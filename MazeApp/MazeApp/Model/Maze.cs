@@ -1,26 +1,9 @@
-﻿using System;
+﻿using MazeApp.Model.Enums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 
 namespace MazeApp.Model
 {
-    public enum GenerationAlgorithm
-    {
-        Tesselation, RecursiveDivide, Wilson
-    }
-
-    [Flags]
-    public enum Direction
-    {
-        None = 1,
-        North = 2,
-        South = 4,
-        East = 8,
-        West = 16
-    }
     public class Maze
     {
         private Direction[,] cells;
@@ -37,26 +20,15 @@ namespace MazeApp.Model
             Height = height;
 
             cells = new Direction[height, width];
-            switch (generationAlgorithm)
-            {
-                case GenerationAlgorithm.Tesselation:
-                    GenerateMazeTesselation(Width);
-                    break;
-                case GenerationAlgorithm.RecursiveDivide:
-                    GenerateMazeRecursiveDivide(0, 0, Width, Height);
-                    break;
-                case GenerationAlgorithm.Wilson:
-                    GenerateMazeWilson();
-                    break;
-            }
+            GenerationStrategyManager.GetStrategy(generationAlgorithm).Generate(this);
         }
 
-        public Direction GetCell(int row, int col)
+        public Direction GetCell(Position pos)
         {
-            return cells[row, col];
+            return cells[pos.Row, pos.Column];
         }
 
-        private void InitializeMaze(bool isBlank = false)
+        public void InitializeMaze(bool isBlank = false)
         {
             for (int i = 0; i < Height; i++)
             {
@@ -99,13 +71,13 @@ namespace MazeApp.Model
             }
         }
 
-        private (int, int)? GetBottomNeighbour(int row, int col)
+        private Position? GetBottomNeighbour(Position position)
         {
-            int neighbourCol = col;
-            int neighbourRow = row + 1;
+            int neighbourRow = position.Row + 1;
+            int neighbourCol = position.Column;
             if (neighbourRow < Height)
             {
-                return (neighbourRow, neighbourCol);
+                return new Position(neighbourRow, neighbourCol);
             }
             else
             {
@@ -113,13 +85,13 @@ namespace MazeApp.Model
             }
         }
 
-        private (int, int)? GetTopNeighbour(int row, int col)
+        private Position? GetTopNeighbour(Position position)
         {
-            int neighbourCol = col;
-            int neighbourRow = row - 1;
-            if (neighbourRow > -1)
+            int neighbourRow = position.Row - 1;
+            int neighbourCol = position.Column;
+            if (neighbourRow >= 0)
             {
-                return (neighbourRow, neighbourCol);
+                return new Position(neighbourRow, neighbourCol);
             }
             else
             {
@@ -127,26 +99,13 @@ namespace MazeApp.Model
             }
         }
 
-        private (int, int)? GetRightNeighbour(int row, int col)
+        private Position? GetRightNeighbour(Position position)
         {
-            int neighbourCol = col + 1;
-            int neighbourRow = row;
+            int neighbourRow = position.Row;
+            int neighbourCol = position.Column + 1;
             if (neighbourCol < Width)
             {
-                return (neighbourRow, neighbourCol);
-            }
-            else
-            {
-                return null;
-            }
-        }
-        private (int, int)? GetLeftNeighbour(int row, int col)
-        {
-            int neighbourCol = col - 1;
-            int neighbourRow = row;
-            if (neighbourCol > -1)
-            {
-                return (neighbourRow, neighbourCol);
+                return new Position(neighbourRow, neighbourCol);
             }
             else
             {
@@ -154,42 +113,54 @@ namespace MazeApp.Model
             }
         }
 
-        public List<(int, int)> GetValidNeighbouringCells(int row, int col)
+        private Position? GetLeftNeighbour(Position position)
         {
-            List<(int, int)> neighbourCells = new();
-            var bottomNeighbour = GetBottomNeighbour(row, col);
-            if (bottomNeighbour != null) { neighbourCells.Add(((int, int))bottomNeighbour); }
-            var rightNeighbour = GetRightNeighbour(row, col);
-            if (rightNeighbour != null) { neighbourCells.Add(((int, int))rightNeighbour); }
-            var topNeighbour = GetTopNeighbour(row, col);
-            if (topNeighbour != null) { neighbourCells.Add(((int, int))topNeighbour); }
-            var leftNeighbour = GetLeftNeighbour(row, col);
-            if (leftNeighbour != null) { neighbourCells.Add(((int, int))leftNeighbour); }
+            int neighbourRow = position.Row;
+            int neighbourCol = position.Column - 1;
+            if (neighbourCol >= 0)
+            {
+                return new Position(neighbourRow, neighbourCol);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public List<Position> GetValidNeighbouringCells(Position position)
+        {
+            List<Position> neighbourCells = new List<Position>();
+            var bottomNeighbour = GetBottomNeighbour(position);
+            if (bottomNeighbour != null) { neighbourCells.Add(bottomNeighbour); }
+            var rightNeighbour = GetRightNeighbour(position);
+            if (rightNeighbour != null) { neighbourCells.Add(rightNeighbour); }
+            var topNeighbour = GetTopNeighbour(position);
+            if (topNeighbour != null) { neighbourCells.Add(topNeighbour); }
+            var leftNeighbour = GetLeftNeighbour(position);
+            if (leftNeighbour != null) { neighbourCells.Add(leftNeighbour); }
             return neighbourCells;
-
         }
 
-
-        private (Direction, Direction)? GetCommonWallDirections((int, int) cell1, (int, int) cell2)
+        private (Direction, Direction)? GetCommonWallDirections(Position position1, Position position2)
         {
-            if (cell1.Item1 == cell2.Item1)
+            if (position1.Row == position2.Row)
             {
-                if (cell1.Item2 == cell2.Item2 + 1)
+                if (position1.Column == position2.Column + 1)
                 {
                     return (Direction.West, Direction.East);
                 }
-                else if (cell1.Item2 == cell2.Item2 - 1)
+                else if (position1.Column == position2.Column - 1)
                 {
                     return (Direction.East, Direction.West);
                 }
             }
-            else if (cell1.Item2 == cell2.Item2)
+            else if (position1.Column == position2.Column)
             {
-                if (cell1.Item1 == cell2.Item1 + 1)
+                if (position1.Row == position2.Row + 1)
                 {
                     return (Direction.North, Direction.South);
                 }
-                else if (cell1.Item1 == cell2.Item1 - 1)
+                else if (position1.Row == position2.Row - 1)
                 {
                     return (Direction.South, Direction.North);
                 }
@@ -198,193 +169,45 @@ namespace MazeApp.Model
             return null;
         }
 
-        private void AddWallBetween((int, int) cell1, (int, int) cell2)
+        public void AddWallBetween(Position position1, Position position2)
         {
-            (Direction, Direction)? commonSides = GetCommonWallDirections(cell1, cell2);
+            (Direction, Direction)? commonSides = GetCommonWallDirections(position1, position2);
             if (commonSides.HasValue)
             {
-                cells[cell1.Item1, cell1.Item2] |= (((Direction, Direction))commonSides).Item1;
-                cells[cell2.Item1, cell2.Item2] |= (((Direction, Direction))commonSides).Item2;
+                cells[position1.Row, position1.Column] |= commonSides.Value.Item1;
+                cells[position2.Row, position2.Column] |= commonSides.Value.Item2;
             }
         }
 
-        private void RemoveWallBetween((int, int) cell1, (int, int) cell2)
+        public void RemoveWallBetween(Position position1, Position position2)
         {
-            (Direction, Direction)? commonSides = GetCommonWallDirections(cell1, cell2);
+            (Direction, Direction)? commonSides = GetCommonWallDirections(position1, position2);
             if (commonSides.HasValue)
             {
-                cells[cell1.Item1, cell1.Item2] &= ~(((Direction, Direction))commonSides).Item1;
-                cells[cell2.Item1, cell2.Item2] &= ~(((Direction, Direction))commonSides).Item2;
+                cells[position1.Row, position1.Column] &= ~commonSides.Value.Item1;
+                cells[position2.Row, position2.Column] &= ~commonSides.Value.Item2;
             }
         }
 
-        public bool IsWallBetween((int, int) cell1, (int, int) cell2) //(row, col)
+        public bool IsWallBetween(Position position1, Position position2)
         {
-            //If a cell index is invalid, throw Exception
-            if (cell1.Item1 < 0 || cell1.Item2 < 0 || cell2.Item1 < 0 || cell2.Item2 < 0
-                || cell1.Item1 >= Height || cell1.Item2 >= Width || cell2.Item1 >= Height || cell2.Item2 >= Width) throw new ArgumentException("Invalid cell index.");
-            (Direction, Direction)? commonSides = GetCommonWallDirections(cell1, cell2);
+            if (position1.Row < 0 || position1.Column < 0 || position2.Row < 0 || position2.Column < 0
+                || position1.Row >= Height || position1.Column >= Width || position2.Row >= Height || position2.Column >= Width)
+            {
+                throw new ArgumentException("Invalid cell index.");
+            }
+
+            (Direction, Direction)? commonSides = GetCommonWallDirections(position1, position2);
             if (commonSides.HasValue)
             {
-                if (cells[cell1.Item1, cell1.Item2].HasFlag((((Direction, Direction))commonSides).Item1))
-                {
-                    return true;
-                }
+                return cells[position1.Row, position1.Column].HasFlag(commonSides.Value.Item1);
             }
             return false;
         }
 
-        private void GenerateMazeTesselation(int size)
+        public void CopyWalls(Position targetPosition, Position sourcePosition)
         {
-            if (Width != Height || (Width & (Width - 1)) != 0) throw new InvalidOperationException("Cannot construct a non-square or non 2 pow maze with this method.");
-            if (size == Width)
-            {
-                InitializeMaze();
-            }
-            if (size <= 1)
-            {
-                return;
-            }
-
-            //Make the smaller maze
-            int partSize = size / 2;
-            GenerateMazeTesselation(partSize);
-
-            //Create 4 identical parts of the smaller maze next to each other
-            for (int x1 = 0; x1 < partSize; x1++)
-            {
-                for (int y1 = 0; y1 < partSize; y1++)
-                {
-                    cells[y1, x1 + partSize] &= cells[y1, x1];
-                    cells[y1 + partSize, x1 + partSize] &= cells[y1, x1];
-                    cells[y1 + partSize, x1] &= cells[y1, x1];
-                }
-            }
-            List<Direction> choice = new List<Direction> { Direction.North, Direction.East, Direction.South, Direction.West }; //1:up, 2:right, 3:left, 4:down
-            Random rand = new Random();
-            int randIndex = rand.Next(choice.Count);
-            choice.RemoveAt(randIndex);
-            foreach (Direction direction in choice)
-            {
-                int x1, x2, y1, y2;
-                if (direction == Direction.North)
-                {
-                    x1 = partSize - 1;
-                    x2 = partSize;
-                    y1 = rand.Next(partSize);
-                    y2 = y1;
-                }
-                else if (direction == Direction.East)
-                {
-                    x1 = rand.Next(partSize) + partSize;
-                    x2 = x1;
-                    y1 = partSize - 1;
-                    y2 = partSize;
-                }
-                else if (direction == Direction.West)
-                {
-                    x1 = rand.Next(partSize);
-                    x2 = x1;
-                    y1 = partSize - 1;
-                    y2 = partSize;
-                }
-                else
-                {
-                    x1 = partSize - 1;
-                    x2 = partSize;
-                    y1 = rand.Next(partSize) + partSize;
-                    y2 = y1;
-                }
-                RemoveWallBetween((y1, x1), (y2, x2));
-            }
-        }
-
-        private void GenerateMazeRecursiveDivide(int x, int y, int width, int height)
-        {
-            if (width == Width)
-            {
-                InitializeMaze(true);
-            }
-            if (width <= 1 || height <= 1)
-            {
-                return;
-            }
-            Random rand = new Random();
-
-            //Divider vertical and horizontal lines with 3 passages between the areas
-            int widthDivide = rand.Next(width - 1) + 1;
-            int heightDivide = rand.Next(height - 1) + 1;
-
-            //Choose the gate that won't be drawn (3 passages are enough between 4 areas)
-            int noPassageChoice = rand.Next(4);
-
-            int firstGate = (noPassageChoice == 0) ? -1 : y + rand.Next(heightDivide);
-            int secondGate = (noPassageChoice == 1) ? -1 : y + heightDivide + rand.Next(height - heightDivide);
-            for (int i = y; i < y + height; i++)
-            {
-                if (i != firstGate && i != secondGate)
-                {
-                    AddWallBetween((i, x + widthDivide - 1), (i, x + widthDivide));
-                    //cells[i, x + widthDivide - 1] |= Direction.East;
-                    //cells[i, x + widthDivide] |= Direction.West;
-                }
-            }
-
-            firstGate = (noPassageChoice == 2) ? -1 : x + rand.Next(widthDivide);
-            secondGate = (noPassageChoice == 3) ? -1 : x + widthDivide + rand.Next(width - widthDivide);
-            for (int i = x; i < x + width; i++)
-            {
-                if (i != firstGate && i != secondGate)
-                {
-                    AddWallBetween((y + heightDivide - 1, i), (y + heightDivide, i));
-                    //cells[y + heightDivide - 1, i] |= Direction.South;
-                    //cells[y + heightDivide, i] |= Direction.North;
-                }
-            }
-
-            //Recursion for the 4 divided areas
-            GenerateMazeRecursiveDivide(x, y, widthDivide, heightDivide);
-            GenerateMazeRecursiveDivide(x + widthDivide, y, width - widthDivide, heightDivide);
-            GenerateMazeRecursiveDivide(x + widthDivide, y + heightDivide, width - widthDivide, height - heightDivide);
-            GenerateMazeRecursiveDivide(x, y + heightDivide, widthDivide, height - heightDivide);
-        }
-
-        public void GenerateMazeWilson()
-        {
-            InitializeMaze();
-            Random rand = new Random();
-            List<(int, int)> maze = new();
-            List<(int, int)> visited = new();
-            List<(int, int)> toBeVisited = Enumerable.Range(0, Height).SelectMany(i => Enumerable.Range(0, Width).Select(j => (i, j))).ToList();
-
-            (int, int) goal = (rand.Next(Height), rand.Next(Width));
-            toBeVisited.Remove(goal);
-            maze.Add(goal);
-
-            while (toBeVisited.Count > 0)
-            {
-                (int, int) current = toBeVisited[0];
-                visited.Add(current);
-                while (!maze.Contains(current))
-                {
-                    List<(int, int)> neighbours = GetValidNeighbouringCells(current.Item1, current.Item2);
-                    current = neighbours[rand.Next(neighbours.Count)];
-                    int index = visited.IndexOf(current);
-                    if (index != -1)
-                    {
-                        visited.RemoveRange(index, visited.Count - index);
-                    }
-                    visited.Add(current);
-                }
-                for (int i = 1; i < visited.Count; i++)
-                {
-                    RemoveWallBetween(visited[i - 1], visited[i]);
-                }
-                visited.RemoveAt(visited.Count - 1);
-                maze.AddRange(visited);
-                toBeVisited = toBeVisited.Except(visited).ToList<(int, int)>();
-                visited.Clear();
-            }
+            cells[targetPosition.Row, targetPosition.Column] &= cells[sourcePosition.Row, sourcePosition.Column];
         }
     }
 }

@@ -1,18 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using MazeApp.Model.Enums;
 
 namespace MazeApp.Model
 {
     public class Settings: INotifyPropertyChanged
     {
+        private string playerName;
         private (int, int) mazeDimensions;
         private GenerationAlgorithm algorithm;
         private bool isLimitedVisibility;
+
+        public string PlayerName
+        {
+            get 
+            { 
+                return playerName; 
+            }
+            set 
+            { 
+                if(value.Length > 0)
+                {
+                    playerName = value;
+                    NotifyPropertyChanged(nameof(PlayerName));
+                }
+            }
+        }
 
         public bool IsLimitedVisibility { 
             get
@@ -93,15 +107,16 @@ namespace MazeApp.Model
                 }
             }
         }
-        public ColourTheme ColourTheme { get; set; }
+        public Theme ColourTheme { get; set; }
 
         public Settings()
         {
             this.Algorithm = GenerationAlgorithm.Wilson;
-            this.ColourTheme = ColourTheme.Dark;
+            this.ColourTheme = Theme.Dark;
             this.MazeHeight = 16;
             this.MazeWidth = 16;
             this.IsLimitedVisibility = true;
+            this.PlayerName = "Player";
         }
 
         public Settings(Settings settings)
@@ -111,6 +126,7 @@ namespace MazeApp.Model
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
             this.IsLimitedVisibility = settings.IsLimitedVisibility;
+            this.PlayerName = settings.PlayerName;
         }
 
         public void CopyFrom(Settings settings)
@@ -120,6 +136,7 @@ namespace MazeApp.Model
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
             this.IsLimitedVisibility = settings.IsLimitedVisibility;
+            this.PlayerName = settings.PlayerName;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

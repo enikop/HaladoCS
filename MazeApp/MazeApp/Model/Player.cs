@@ -1,10 +1,4 @@
-﻿using MazeApp.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MazeApp.Model.Enums;
 
 namespace MazeApp.Model
 {
@@ -12,13 +6,17 @@ namespace MazeApp.Model
     {
 
         public Direction MoveDirection { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public Position Position { get; set; }
 
-        public (int, int) PreviewStepOne(Direction dir)
+        public Player()
         {
-            int x = this.X;
-            int y = this.Y;
+            this.Position = new Position(0, 0);
+        }
+
+        public Position PreviewStepOne(Direction dir)
+        {
+            int x = this.Position.Column;
+            int y = this.Position.Row;
             switch (dir)
             {
                 case Direction.North:
@@ -35,7 +33,7 @@ namespace MazeApp.Model
                     break;
 
             }
-            return (x, y);
+            return new Position(y,x);
 
         }
     }

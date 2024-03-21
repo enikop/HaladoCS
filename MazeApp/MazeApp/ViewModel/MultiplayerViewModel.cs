@@ -1,19 +1,14 @@
 ﻿using MazeApp.Model;
+using MazeApp.Model.Enums;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Numerics;
 using System.Timers;
 
 namespace MazeApp.ViewModel
-{ 
+{
     public class MultiplayerViewModel: GameViewModel
     {
         private readonly Player playerOne;
         private readonly Player playerTwo;
-
-        private Timer aTimer;
 
         public Direction PlayerOneMoveDirection
         {
@@ -43,36 +38,36 @@ namespace MazeApp.ViewModel
 
         public int PlayerOneX
         {
-            get { return playerOne.X; }
+            get { return playerOne.Position.Column; }
             set { 
-                playerOne.X = value; 
+                playerOne.Position.Column = value; 
                 NotifyPropertyChanged(nameof(PlayerOneX));
             }
         }
 
         public int PlayerOneY
         {
-            get { return playerOne.Y; }
+            get { return playerOne.Position.Row; }
             set { 
-                playerOne.Y = value; 
+                playerOne.Position.Row = value; 
                 NotifyPropertyChanged(nameof(PlayerOneY));
             }
         }
 
         public int PlayerTwoX
         {
-            get { return playerTwo.X; }
+            get { return playerTwo.Position.Column; }
             set { 
-                playerTwo.X = value; 
+                playerTwo.Position.Column = value; 
                 NotifyPropertyChanged(nameof(PlayerTwoX));
             }
         }
 
         public int PlayerTwoY
         {
-            get { return playerTwo.Y; }
+            get { return playerTwo.Position.Row; }
             set { 
-                playerTwo.Y = value;
+                playerTwo.Position.Row = value;
                 NotifyPropertyChanged(nameof(PlayerTwoY));
             }
         }
@@ -86,24 +81,7 @@ namespace MazeApp.ViewModel
 
         }
 
-        private void SetTimer()
-        {
-            aTimer = new Timer(80);
-            aTimer.Elapsed += UpdatePlayerPositions;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
-        }
-
-        public void DisposeTimer()
-        {
-            if (aTimer != null)
-            {
-                aTimer.Stop();
-                aTimer.Dispose();
-            }
-        }
-
-        public void UpdatePlayerPositions(Object? source, ElapsedEventArgs elapsedEventArgs) 
+        public override void UpdatePlayerPositions() 
         {
             MovePlayers();
         }
@@ -115,25 +93,21 @@ namespace MazeApp.ViewModel
             {
                 if (playerOne.MoveDirection.HasFlag(dir))
                 {
-                    (int, int) newPos = playerOne.PreviewStepOne(dir);
-                    if(IsWithinBoundaries(newPos.Item1, newPos.Item2) && !maze.IsWallBetween((PlayerOneY, PlayerOneX), (newPos.Item2, newPos.Item1)))
+                    Position newPos = playerOne.PreviewStepOne(dir);
+                    if(IsWithinBoundaries(newPos) && !maze.IsWallBetween(playerOne.Position, newPos))
                     {
-                        PlayerOneX = newPos.Item1;
-                        PlayerOneY = newPos.Item2;
-                        NotifyPropertyChanged(nameof(PlayerOneX));
-                        NotifyPropertyChanged(nameof(PlayerOneY));
+                        PlayerOneX = newPos.Column;
+                        PlayerOneY = newPos.Row;
                     }
 
                 }
                 if (playerTwo.MoveDirection.HasFlag(dir))
                 {
-                    (int, int) newPos = playerTwo.PreviewStepOne(dir);
-                    if (IsWithinBoundaries(newPos.Item1, newPos.Item2) && !maze.IsWallBetween((PlayerTwoY, PlayerTwoX), (newPos.Item2, newPos.Item1)))
+                    Position newPos = playerTwo.PreviewStepOne(dir);
+                    if (IsWithinBoundaries(newPos) && !maze.IsWallBetween(playerTwo.Position, newPos))
                     {
-                        PlayerTwoX = newPos.Item1;
-                        PlayerTwoY = newPos.Item2;
-                        NotifyPropertyChanged(nameof(PlayerTwoX));
-                        NotifyPropertyChanged(nameof(PlayerTwoY));
+                        PlayerTwoX = newPos.Column;
+                        PlayerTwoY = newPos.Row;
                     }
                 }
             }
