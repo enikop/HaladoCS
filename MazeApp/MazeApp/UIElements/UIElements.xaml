@@ -16,6 +16,21 @@
         </Setter>
     </Style>
 
+    <Style x:Key="highScoreStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="30pt"/>
+        <Setter Property="FontFamily" Value="Stencil"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="{DynamicResource PlayerTwoColor}" Offset="0.0"/>
+                    <GradientStop Color="{DynamicResource PlayerOneColor}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="timerStyle" TargetType="Label">
         <Setter Property="FontSize" Value="26pt"/>
         <Setter Property="FontFamily" Value="Stencil"/>

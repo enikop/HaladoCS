@@ -12,7 +12,7 @@ namespace MazeApp.View
         {
             if (value is bool isVisible)
             {
-                return isVisible ? Visibility.Visible : Visibility.Hidden;
+                return isVisible ? Visibility.Visible : Visibility.Collapsed;
             }
 
             return Visibility.Hidden;

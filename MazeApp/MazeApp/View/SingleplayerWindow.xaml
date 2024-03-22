@@ -48,6 +48,7 @@
             <RowDefinition Height="10px"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row ="0" Grid.Column="0" Style="{DynamicResource HeaderLabelStyle}"/>
@@ -108,7 +109,10 @@
             </Canvas>
         </Grid>
         <Label Grid.Row="2" Style="{StaticResource timerStyle}" Content="{Binding ElapsedTime, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="2" Style="{StaticResource timerStyle}" Content="New High Score!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+        <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource BackgroundBrush}" Visibility="{Binding HasGameEnded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+            <Label Style="{StaticResource highScoreStyle}" Content="{Binding ElapsedTime}" ContentStringFormat="Your time: {0}s"/>
+            <Label Style="{StaticResource highScoreStyle}" Content="New Best Time!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" />
+        </StackPanel>
 
     </Grid>
 </Window>

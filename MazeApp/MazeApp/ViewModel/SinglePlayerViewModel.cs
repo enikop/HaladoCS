@@ -15,6 +15,20 @@ namespace MazeApp.ViewModel
         private DispatcherTimer dispatcherTimer;
         private int gameTime;
         private bool isHighScore;
+        private bool hasGameEnded;
+
+        public bool HasGameEnded
+        {
+            get
+            {
+                return hasGameEnded;
+            }
+            set
+            {
+                hasGameEnded = value;
+                NotifyPropertyChanged(nameof(HasGameEnded));
+            }
+        }
 
         public bool IsHighScore
         {
@@ -111,7 +125,8 @@ namespace MazeApp.ViewModel
             this.playerOne = new Player();
             this.prizePosition = new Position(0, 0);
             this.IsHighScore = false;
-            ElapsedTime = 0;
+            this.HasGameEnded = false;
+            this.ElapsedTime = 0;
             dispatcherTimer = new();
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Tick += new EventHandler((s,e) => increaseTimer());
@@ -127,7 +142,21 @@ namespace MazeApp.ViewModel
 
         public override void UpdatePlayerPositions()
         {
-            MovePlayer();
+            if (!hasGameEnded)
+            {
+                MovePlayer();
+                if (playerOne.Position.Equals(prizePosition))
+                {
+                    HasGameEnded = true;
+                    dispatcherTimer.Stop();
+                    if (IsNewHighScore())
+                    {
+                        IsHighScore = true;
+
+                    }
+                }
+            }
+
         }
 
         public void MovePlayer()
@@ -142,14 +171,6 @@ namespace MazeApp.ViewModel
                     {
                         PlayerOneX = newPos.Column;
                         PlayerOneY = newPos.Row;
-                    }
-                    if (playerOne.Position.Equals(prizePosition))
-                    {
-                        dispatcherTimer.Stop();
-                        if (IsNewHighScore())
-                        {
-                            IsHighScore = true;
-                        }
                     }
                 }
             }
