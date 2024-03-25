@@ -8,13 +8,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Runtime.Serialization.Json;
+using MazeApp.Model.Enums;
 
 namespace MazeApp.Model
 {
     public class ScoreLogger
     {
-
-        public static bool LogScore(string filePath, Result newScore)
+        private static List<Result> ReadRecords(string filePath)
         {
             List<Result> records = new List<Result>();
 
@@ -26,6 +26,22 @@ namespace MazeApp.Model
                 stream.Position = 0;
                 records = ((Result[]?)jsonSerializer.ReadObject(stream))?.ToList() ?? new List<Result>();
             }
+            return records;
+        }
+        public static Result? ReadBestResult(string filePath, Result previewRes)
+        {
+            List<Result> records = ReadRecords(filePath);
+            Result? existingRecord = records.FirstOrDefault(r => r.IsSameCategory(previewRes));
+            if(existingRecord != null)
+            {
+                return existingRecord;
+            }
+            return null;
+        }
+
+        public static bool LogScore(string filePath, Result newScore)
+        {
+            List<Result> records = ReadRecords(filePath);
             // Check if there is a better time for the same parameters
             List<Result> categoryResults = records.FindAll(r => newScore.IsSameCategory(r));
             Result? existingRecord = categoryResults.FirstOrDefault(r => r.ElapsedTime < newScore.ElapsedTime);

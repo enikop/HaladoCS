@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeApp.View"
+        xmlns:model="clr-namespace:MazeApp.ViewModel"
         mc:Ignorable="d"
         Title="MultiplayerWindow" 
         WindowStartupLocation="CenterScreen"
@@ -117,6 +118,30 @@
                         </RadialGradientBrush>
                     </Path.Fill>
                 </Path>
+
+            </Canvas>
+            <Canvas Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <ItemsControl ItemsSource="{Binding Pickups}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Path Fill="{DynamicResource PlayerTwoBrush}">
+                                <Path.Data>
+                                    <RectangleGeometry>
+                                        <RectangleGeometry.Rect>
+                                            <MultiBinding Converter="{StaticResource rectConverter}">
+                                                <Binding Path="Column"/>
+                                                <Binding Path="Row"/>
+                                                <Binding Path="DataContext.PickupSize" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
+                                                <Binding Path="DataContext.PickupSize" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
+                                                <Binding Path="DataContext.CellSize" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
+                                            </MultiBinding>
+                                        </RectangleGeometry.Rect>
+                                    </RectangleGeometry>
+                                </Path.Data>
+                            </Path>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Canvas>
         </Grid>
     </Grid>

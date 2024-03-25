@@ -43,6 +43,16 @@ namespace MazeApp.Model
             IsLimitedVisibility = isLimitedVisibility;
         }
 
+        public Result( GenerationAlgorithm generationAlgorithm, int mazeWidth, int mazeHeight, bool isLimitedVisibility)
+        {
+            PlayerName = "none";
+            ElapsedTime = 99999;
+            Algorithm = generationAlgorithm.ToString();
+            MazeWidth = mazeWidth;
+            MazeHeight = mazeHeight;
+            IsLimitedVisibility = isLimitedVisibility;
+        }
+
         public bool IsSameCategory(Result other)
         {
             return Algorithm == other.Algorithm &&

@@ -1,14 +1,54 @@
 ﻿using MazeApp.Model;
 using MazeApp.Model.Enums;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Timers;
+using System.Windows.Documents;
 
 namespace MazeApp.ViewModel
 {
-    public class MultiplayerViewModel: GameViewModel
+    public class MultiplayerViewModel : GameViewModel
     {
         private readonly Player playerOne;
         private readonly Player playerTwo;
+
+        private ObservableCollection<Position> pickups;
+
+        public ObservableCollection<Position> Pickups
+        {
+            get { return pickups; }
+        }
+
+        public int PickupSize
+        {
+            get { return CellSize / 2; }
+        }
+
+        public int PlayerOneScore
+        {
+            get {
+                return playerOne.Score;
+            }
+            set
+            {
+               playerOne.Score = value;
+               NotifyPropertyChanged(nameof(PlayerOneScore));
+            }
+        }
+
+        public int PlayerTwoScore
+        {
+            get
+            {
+                return playerTwo.Score;
+            }
+            set
+            {
+                playerTwo.Score = value;
+                NotifyPropertyChanged(nameof(PlayerTwoScore));
+            }
+        }
 
         public Direction PlayerOneMoveDirection
         {
@@ -76,9 +116,25 @@ namespace MazeApp.ViewModel
         {
             this.playerOne = new Player();
             this.playerTwo = new Player();
-
+            this.pickups = new();
+            AddPickup();
+            AddPickup();
             SetTimer();
 
+        }
+
+        private void AddPickup()
+        {
+            Random rand = new Random();
+            int row, column;
+            Position newPos;
+            do
+            {
+                column = rand.Next(0, this.MazeWidth);
+                row = rand.Next(0, this.MazeHeight);
+                newPos = new Position(row, column);
+            } while (pickups.Contains(newPos));
+            pickups.Add(new Position(row, column));
         }
 
         public override void UpdatePlayerPositions() 

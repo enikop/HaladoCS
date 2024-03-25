@@ -16,6 +16,17 @@ namespace MazeApp.ViewModel
         private int gameTime;
         private bool isHighScore;
         private bool hasGameEnded;
+        private readonly string logPath = "scores.json";
+
+        public Result? BestResult { get; set; }
+
+        public bool IsBestResultValid
+        {
+            get 
+            { 
+                return this.BestResult != null;
+            }
+        }
 
         public bool HasGameEnded
         {
@@ -59,7 +70,7 @@ namespace MazeApp.ViewModel
         {
             get
             {
-                return PlayerSize / 3;
+                return PlayerSize / 2;
             }
         }
         public int PrizeY
@@ -127,6 +138,7 @@ namespace MazeApp.ViewModel
             this.IsHighScore = false;
             this.HasGameEnded = false;
             this.ElapsedTime = 0;
+            this.BestResult = ScoreLogger.ReadBestResult(logPath, new Result(Algorithm, MazeWidth, MazeHeight, IsLimitedVisibility));
             dispatcherTimer = new();
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Tick += new EventHandler((s,e) => increaseTimer());
@@ -178,7 +190,7 @@ namespace MazeApp.ViewModel
 
         private bool IsNewHighScore()
         {
-            return ScoreLogger.LogScore("scores.json", 
+            return ScoreLogger.LogScore(logPath, 
                 new Result(PlayerName, ElapsedTime, Algorithm, MazeWidth, MazeHeight, IsLimitedVisibility));
         }
     }

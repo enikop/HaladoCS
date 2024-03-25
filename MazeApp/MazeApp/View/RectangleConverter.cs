@@ -15,7 +15,9 @@ namespace MazeApp.View
             }
             else if (values.Length == 5 && values[0] is int x && values[1] is int y && values[2] is int w && values[3] is int h && values[4] is int cellSize)
             {
-                return new Rect(x*cellSize,y*cellSize,w,h);
+                double left = x * cellSize + cellSize / 2.0 - w / 2.0;
+                double top = y * cellSize + cellSize / 2.0 - h / 2;
+                return new Rect(left, top, w,h);
             }
             return DependencyProperty.UnsetValue;
         }

@@ -16,7 +16,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="highScoreStyle" TargetType="Label">
+    <Style x:Key="HighScoreStyle" TargetType="Label">
         <Setter Property="FontSize" Value="30pt"/>
         <Setter Property="FontFamily" Value="Stencil"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -31,13 +31,29 @@
         </Setter>
     </Style>
 
-    <Style x:Key="timerStyle" TargetType="Label">
+    <Style x:Key="TimerStyle" TargetType="Label">
         <Setter Property="FontSize" Value="26pt"/>
         <Setter Property="FontFamily" Value="Stencil"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="Margin" Value="5 0"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+    </Style>
+
+    <Style x:Key="BestTimeStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="14pt"/>
+        <Setter Property="FontFamily" Value="Stencil"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="10 0 0 0"/>
+        <Setter Property="Foreground" Value="{DynamicResource PlayerTwoBrush}"/>
+    </Style>
+
+    <Style x:Key="BestPlayerStyle" BasedOn="{StaticResource BestTimeStyle}" TargetType="Label">
+        <Setter Property="FontSize" Value="12pt"/>
+        <Setter Property="Margin" Value="2 0 0 0"/>
+        <Setter Property="Foreground" Value="{DynamicResource PlayerOneBrush}"/>
     </Style>
 
     <Style x:Key="InputLabelStyle" TargetType="TextBlock">

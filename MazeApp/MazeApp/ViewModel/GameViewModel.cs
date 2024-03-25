@@ -106,8 +106,8 @@ namespace MazeApp.ViewModel
             this.settings = settings;
             this.maze = new Maze(this.MazeWidth, this.MazeHeight, this.Algorithm);
             //Cell size is proportionally changed with the largest dimension of the maze
-            //It's 40 at a 16 grid length, but it does not grow beyond 60
-            this.CellSize = (int)Math.Floor(Math.Min(60, 40 * 16.0 / Math.Max(this.MazeWidth, this.MazeHeight)));
+            //It's 36 at a 16 grid length, but it does not grow beyond 60
+            this.CellSize = (int)Math.Floor(Math.Min(60, 38 * 16.0 / Math.Max(this.MazeWidth, this.MazeHeight)));
             refreshTimer = new Timer(loopTime);
         }
 

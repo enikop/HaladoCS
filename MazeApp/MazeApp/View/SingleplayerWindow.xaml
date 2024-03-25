@@ -48,7 +48,6 @@
             <RowDefinition Height="10px"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row ="0" Grid.Column="0" Style="{DynamicResource HeaderLabelStyle}"/>
@@ -95,24 +94,36 @@
                 </Path>
                 <Path Fill="{DynamicResource PlayerTwoBrush}">
                     <Path.Data>
-                        <EllipseGeometry RadiusX="{Binding PrizeSize}" RadiusY="{Binding PrizeSize}">
-                            <EllipseGeometry.Center>
-                                <MultiBinding Converter="{StaticResource centerConverter}">
+                        <RectangleGeometry>
+                            <RectangleGeometry.Rect>
+                                <MultiBinding Converter="{StaticResource rectConverter}">
                                     <Binding Path="PrizeX"/>
                                     <Binding Path="PrizeY"/>
+                                    <Binding Path="PrizeSize"/>
+                                    <Binding Path="PrizeSize"/>
                                     <Binding Path="CellSize"/>
                                 </MultiBinding>
-                            </EllipseGeometry.Center>
-                        </EllipseGeometry>
+                            </RectangleGeometry.Rect>
+                        </RectangleGeometry>
                     </Path.Data>
                 </Path>
             </Canvas>
         </Grid>
-        <Label Grid.Row="2" Style="{StaticResource timerStyle}" Content="{Binding ElapsedTime, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource BackgroundBrush}" Visibility="{Binding HasGameEnded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
-            <Label Style="{StaticResource highScoreStyle}" Content="{Binding ElapsedTime}" ContentStringFormat="Your time: {0}s"/>
-            <Label Style="{StaticResource highScoreStyle}" Content="New Best Time!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" />
+            <Label Style="{StaticResource HighScoreStyle}" Content="{Binding ElapsedTime}" ContentStringFormat="Your time: {0}s"/>
+            <Label Style="{StaticResource HighScoreStyle}" Content="New Best Time!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" />
         </StackPanel>
-
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment ="Center" Visibility="{Binding IsBestResultValid, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+                <Label Style="{StaticResource BestTimeStyle}" Content="{Binding BestResult.ElapsedTime}" ContentStringFormat="Best time: {0}s" />
+                <Label Style="{StaticResource BestPlayerStyle}" Content="{Binding BestResult.PlayerName}" ContentStringFormat="({0})"/>
+            </StackPanel>
+            <Label Grid.Column="2" Style="{StaticResource TimerStyle}" Content="{Binding ElapsedTime, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
     </Grid>
 </Window>

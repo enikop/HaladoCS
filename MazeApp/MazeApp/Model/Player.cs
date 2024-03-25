@@ -7,10 +7,12 @@ namespace MazeApp.Model
 
         public Direction MoveDirection { get; set; }
         public Position Position { get; set; }
+        public int Score { get; set; }
 
         public Player()
         {
             this.Position = new Position(0, 0);
+            this.Score = 0;
         }
 
         public Position PreviewStepOne(Direction dir)
