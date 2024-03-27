@@ -13,11 +13,68 @@ namespace MazeApp.ViewModel
         private readonly Player playerOne;
         private readonly Player playerTwo;
 
-        private ObservableCollection<Position> pickups;
-
-        public ObservableCollection<Position> Pickups
+        private Position pickupOne;
+        private Position pickupTwo;
+        private Position pickupMixed;
+       
+        public int PickupOneX
         {
-            get { return pickups; }
+            get { return pickupOne.Column; }
+            set 
+            { 
+                pickupOne.Column = value;
+                NotifyPropertyChanged(nameof(PickupOneX));
+            }
+        }
+
+        public int PickupOneY
+        {
+            get { return pickupOne.Row; }
+            set
+            {
+                pickupOne.Row = value;
+                NotifyPropertyChanged(nameof(PickupOneY));
+            }
+        }
+
+        public int PickupTwoX
+        {
+            get { return pickupTwo.Column; }
+            set
+            {
+                pickupTwo.Column = value;
+                NotifyPropertyChanged(nameof(PickupTwoX));
+            }
+        }
+
+        public int PickupTwoY
+        {
+            get { return pickupTwo.Row; }
+            set
+            {
+                pickupTwo.Row = value;
+                NotifyPropertyChanged(nameof(PickupTwoY));
+            }
+        }
+
+        public int PickupMixedX
+        {
+            get { return pickupMixed.Column; }
+            set
+            {
+                pickupMixed.Column = value;
+                NotifyPropertyChanged(nameof(PickupMixedX));
+            }
+        }
+
+        public int PickupMixedY
+        {
+            get { return pickupMixed.Row; }
+            set
+            {
+                pickupMixed.Row = value;
+                NotifyPropertyChanged(nameof(PickupMixedY));
+            }
         }
 
         public int PickupSize
@@ -116,25 +173,26 @@ namespace MazeApp.ViewModel
         {
             this.playerOne = new Player();
             this.playerTwo = new Player();
-            this.pickups = new();
-            AddPickup();
-            AddPickup();
+            this.pickupOne = GetNewPickupPosition();
+            this.pickupTwo = GetNewPickupPosition();
+            this.pickupMixed = GetNewPickupPosition();
             SetTimer();
 
         }
 
-        private void AddPickup()
+        private Position GetNewPickupPosition()
         {
-            Random rand = new Random();
-            int row, column;
-            Position newPos;
-            do
+            Random random = new Random();
+            int column = random.Next(0, MazeWidth);
+            int row = random.Next(0, MazeHeight);
+            Position output = new Position(row, column);
+            while(output.Equals(pickupOne) || output.Equals(pickupTwo) 
+                || output.Equals(pickupMixed) || output.Equals(playerOne.Position)
+                || output.Equals(playerTwo.Position)) 
             {
-                column = rand.Next(0, this.MazeWidth);
-                row = rand.Next(0, this.MazeHeight);
-                newPos = new Position(row, column);
-            } while (pickups.Contains(newPos));
-            pickups.Add(new Position(row, column));
+                output = new Position(random.Next(0, MazeHeight), random.Next(0, MazeWidth));
+            }
+            return output;
         }
 
         public override void UpdatePlayerPositions() 
@@ -166,6 +224,39 @@ namespace MazeApp.ViewModel
                         PlayerTwoY = newPos.Row;
                     }
                 }
+                HandlePickups();
+            }
+        }
+
+        private void HandlePickups()
+        {
+            if (playerOne.Position.Equals(pickupOne))
+            {
+                PlayerOneScore += 1;
+                pickupOne = GetNewPickupPosition();
+                NotifyPropertyChanged(nameof(PickupOneX));
+                NotifyPropertyChanged(nameof(PickupOneY));
+            }
+            if (playerOne.Position.Equals(pickupMixed))
+            {
+                PlayerOneScore += 2;
+                pickupMixed = GetNewPickupPosition();
+                NotifyPropertyChanged(nameof(PickupMixedX));
+                NotifyPropertyChanged(nameof(PickupMixedY));
+            }
+            if (playerTwo.Position.Equals(pickupTwo))
+            {
+                PlayerTwoScore += 1;
+                pickupTwo = GetNewPickupPosition();
+                NotifyPropertyChanged(nameof(PickupTwoX));
+                NotifyPropertyChanged(nameof(PickupTwoY));
+            }
+            if (playerTwo.Position.Equals(pickupMixed))
+            {
+                PlayerTwoScore += 2;
+                pickupMixed = GetNewPickupPosition();
+                NotifyPropertyChanged(nameof(PickupMixedX));
+                NotifyPropertyChanged(nameof(PickupMixedY));
             }
         }
     }

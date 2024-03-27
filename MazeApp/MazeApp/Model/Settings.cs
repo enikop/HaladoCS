@@ -66,7 +66,7 @@ namespace MazeApp.Model
             }
             set
             {
-                if (value > 1 && value <= 20)
+                if (value > 3 && value <= 20)
                 {
                     //If algorithm is tesselation, set both dimensions if value is the power of 2, otherwise return
                     if (this.Algorithm == GenerationAlgorithm.Tesselation && (value & (value - 1)) != 0)
@@ -91,7 +91,7 @@ namespace MazeApp.Model
             }
             set
             {
-                if (value > 1 && value <= 20)
+                if (value > 3 && value <= 20)
                 {
                     //If algorithm is tesselation, set both dimensions if value is the power of 2, otherwise return
                     if (this.Algorithm == GenerationAlgorithm.Tesselation && (value & (value - 1)) != 0)
