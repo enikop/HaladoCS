@@ -9,6 +9,7 @@ namespace MazeApp.Model
         public Position Position { get; set; }
         public int Score { get; set; }
 
+
         public Player()
         {
             this.Position = new Position(0, 0);

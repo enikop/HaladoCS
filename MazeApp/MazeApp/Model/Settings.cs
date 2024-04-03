@@ -113,10 +113,10 @@ namespace MazeApp.Model
         {
             this.Algorithm = GenerationAlgorithm.Wilson;
             this.ColourTheme = Theme.Dark;
-            this.MazeHeight = 16;
-            this.MazeWidth = 16;
-            this.IsLimitedVisibility = true;
-            this.PlayerName = "Player";
+            this.MazeHeight = 6;
+            this.MazeWidth = 6;
+            this.IsLimitedVisibility = false;
+            this.playerName = "Unknown Owl";
         }
 
         public Settings(Settings settings)
@@ -126,7 +126,7 @@ namespace MazeApp.Model
             this.MazeHeight = settings.MazeHeight;
             this.MazeWidth = settings.MazeWidth;
             this.IsLimitedVisibility = settings.IsLimitedVisibility;
-            this.PlayerName = settings.PlayerName;
+            this.playerName = settings.PlayerName;
         }
 
         public void CopyFrom(Settings settings)

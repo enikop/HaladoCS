@@ -3,6 +3,7 @@ using MazeApp.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Numerics;
 using System.Timers;
 using System.Windows.Documents;
 
@@ -10,12 +11,36 @@ namespace MazeApp.ViewModel
 {
     public class MultiplayerViewModel : GameViewModel
     {
+        private readonly int winningScore = 15;
+        private int? winnerNum = null;
+
         private readonly Player playerOne;
         private readonly Player playerTwo;
 
-        private Position pickupOne;
-        private Position pickupTwo;
-        private Position pickupMixed;
+        private Pickup pickupOne;
+        private Pickup pickupTwo;
+        private Pickup pickupMixed;
+
+        public bool HasGameEnded {
+            get
+            {
+                return winnerNum != null;
+            }
+        }
+
+        public int? WinnerNum
+        {
+            get
+            {
+                return winnerNum;
+            }
+            set
+            {
+                winnerNum = value;
+                NotifyPropertyChanged(nameof(WinnerNum));
+                NotifyPropertyChanged(nameof(HasGameEnded));
+            }
+        }
        
         public int PickupOneX
         {
@@ -173,9 +198,13 @@ namespace MazeApp.ViewModel
         {
             this.playerOne = new Player();
             this.playerTwo = new Player();
-            this.pickupOne = GetNewPickupPosition();
-            this.pickupTwo = GetNewPickupPosition();
-            this.pickupMixed = GetNewPickupPosition();
+            this.pickupOne = new Pickup();
+            this.pickupTwo = new Pickup();
+            this.pickupMixed = new Pickup();
+
+            pickupOne.Position = GetNewPickupPosition();
+            pickupTwo.Position = GetNewPickupPosition();
+            pickupMixed.Position = GetNewPickupPosition();
             SetTimer();
 
         }
@@ -183,21 +212,25 @@ namespace MazeApp.ViewModel
         private Position GetNewPickupPosition()
         {
             Random random = new Random();
-            int column = random.Next(0, MazeWidth);
-            int row = random.Next(0, MazeHeight);
-            Position output = new Position(row, column);
-            while(output.Equals(pickupOne) || output.Equals(pickupTwo) 
-                || output.Equals(pickupMixed) || output.Equals(playerOne.Position)
-                || output.Equals(playerTwo.Position)) 
+            Position output;
+            do
             {
-                output = new Position(random.Next(0, MazeHeight), random.Next(0, MazeWidth));
+                int column = random.Next(0, MazeWidth);
+                int row = random.Next(0, MazeHeight);
+                output = new Position(row, column);
             }
+            while (output.Equals(pickupOne.Position) || output.Equals(pickupTwo.Position)
+                || output.Equals(pickupMixed.Position) || output.Equals(playerOne.Position)
+                || output.Equals(playerTwo.Position));
             return output;
         }
 
         public override void UpdatePlayerPositions() 
         {
-            MovePlayers();
+            if (!HasGameEnded)
+            {
+                MovePlayers();
+            }
         }
 
         public void MovePlayers()
@@ -230,33 +263,71 @@ namespace MazeApp.ViewModel
 
         private void HandlePickups()
         {
-            if (playerOne.Position.Equals(pickupOne))
+            if (playerOne.Position.Equals(pickupOne.Position))
             {
                 PlayerOneScore += 1;
-                pickupOne = GetNewPickupPosition();
-                NotifyPropertyChanged(nameof(PickupOneX));
-                NotifyPropertyChanged(nameof(PickupOneY));
+                pickupOne.IsToMove = true;
             }
-            if (playerOne.Position.Equals(pickupMixed))
+            else if (playerOne.Position.Equals(pickupMixed.Position))
             {
                 PlayerOneScore += 2;
-                pickupMixed = GetNewPickupPosition();
-                NotifyPropertyChanged(nameof(PickupMixedX));
-                NotifyPropertyChanged(nameof(PickupMixedY));
+                pickupMixed.IsToMove = true;
             }
-            if (playerTwo.Position.Equals(pickupTwo))
+
+
+            if (playerTwo.Position.Equals(pickupTwo.Position))
             {
                 PlayerTwoScore += 1;
-                pickupTwo = GetNewPickupPosition();
-                NotifyPropertyChanged(nameof(PickupTwoX));
-                NotifyPropertyChanged(nameof(PickupTwoY));
+                pickupTwo.IsToMove = true;
             }
-            if (playerTwo.Position.Equals(pickupMixed))
+            else if (playerTwo.Position.Equals(pickupMixed.Position))
             {
                 PlayerTwoScore += 2;
-                pickupMixed = GetNewPickupPosition();
-                NotifyPropertyChanged(nameof(PickupMixedX));
-                NotifyPropertyChanged(nameof(PickupMixedY));
+                pickupMixed.IsToMove = true;
+            }
+
+            MovePickups();
+            CheckForWin();
+        }
+
+        private void MovePickups()
+        {
+            Position newPos;
+            if (pickupOne.IsToMove)
+            {
+                newPos = GetNewPickupPosition();
+                PickupOneX = newPos.Column;
+                PickupOneY = newPos.Row;
+            }
+
+            if (pickupTwo.IsToMove)
+            {
+                newPos = GetNewPickupPosition();
+                PickupTwoX = newPos.Column;
+                PickupTwoY = newPos.Row;
+            }
+
+            if (pickupMixed.IsToMove)
+            {
+                newPos = GetNewPickupPosition();
+                PickupMixedX = newPos.Column;
+                PickupMixedY = newPos.Row;
+            }
+        }
+
+        private void CheckForWin()
+        {
+            if (PlayerOneScore >= winningScore && PlayerTwoScore >= winningScore)
+            {
+                WinnerNum = 0;
+            }
+            else if (PlayerOneScore >= winningScore)
+            {
+                WinnerNum = 1;
+            }
+            else if (PlayerTwoScore >= winningScore)
+            {
+                WinnerNum = 2;
             }
         }
     }
