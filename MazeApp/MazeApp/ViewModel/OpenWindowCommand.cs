@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows;
-using MazeApp.Model;
+﻿using MazeApp.Model;
+using System;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Input;
 
 namespace MazeApp.ViewModel
 {

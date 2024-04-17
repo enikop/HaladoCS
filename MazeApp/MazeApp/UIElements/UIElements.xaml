@@ -61,7 +61,7 @@
         <Setter Property="FontSize" Value="10pt"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
     </Style>
-    
+
     <Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource PlayerTwoBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PlayerTwoBrush}"/>
@@ -84,6 +84,12 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Opacity" Value="1"/>
+            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PlayerOneBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource PlayerOneBrush}"/>

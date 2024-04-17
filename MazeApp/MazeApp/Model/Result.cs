@@ -1,10 +1,6 @@
 ﻿using MazeApp.Model.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MazeApp.Model
 {
@@ -43,7 +39,7 @@ namespace MazeApp.Model
             IsLimitedVisibility = isLimitedVisibility;
         }
 
-        public Result( GenerationAlgorithm generationAlgorithm, int mazeWidth, int mazeHeight, bool isLimitedVisibility)
+        public Result(GenerationAlgorithm generationAlgorithm, int mazeWidth, int mazeHeight, bool isLimitedVisibility)
         {
             PlayerName = "none";
             ElapsedTime = 99999;

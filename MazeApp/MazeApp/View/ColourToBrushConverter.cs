@@ -17,7 +17,7 @@ namespace MazeApp.View
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Faulty argument, conversion failed."+ex.Message);
+                throw new ArgumentException("Faulty argument, conversion failed." + ex.Message);
             }
         }
 

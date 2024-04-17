@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MazeApp.Model
+﻿namespace MazeApp.Model
 {
     public class Pickup
     {
         private Position pos;
-        public int Column {
-            get {
+        public int Column
+        {
+            get
+            {
                 return pos.Column;
-            } 
-            set { 
+            }
+            set
+            {
                 pos.Column = value;
                 IsToMove = false;
             }
@@ -47,7 +44,7 @@ namespace MazeApp.Model
 
         public Pickup()
         {
-            this.pos = new Position(0,0);
+            this.pos = new Position(0, 0);
             IsToMove = false;
         }
     }

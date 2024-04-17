@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MazeApp.Model;
+using MazeApp.Model.Enums;
+using MazeApp.ViewModel;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using MazeApp.ViewModel;
-using MazeApp.Model;
-using MazeApp.Model.Enums;
 
 namespace MazeApp.View
 {
@@ -12,7 +12,7 @@ namespace MazeApp.View
     /// Interaction logic for MultiplayerWindow.xaml
     /// </summary>
     public partial class MultiplayerWindow : Window
-    { 
+    {
 
         private readonly MultiplayerViewModel multiplayerViewModel;
         public MultiplayerWindow(Settings settings)

@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace MazeApp.ViewModel
 {
-    public class CloseWindowCommand: ICommand
+    public class CloseWindowCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
 

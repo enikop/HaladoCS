@@ -1,14 +1,11 @@
 ﻿using MazeApp.Model;
 using MazeApp.Model.Enums;
 using System;
-using System.Threading;
-using System.Timers;
-using System.Windows;
 using System.Windows.Threading;
 
 namespace MazeApp.ViewModel
 {
-    public class SingleplayerViewModel: GameViewModel
+    public class SingleplayerViewModel : GameViewModel
     {
         private readonly Player playerOne;
         private Position prizePosition;
@@ -22,8 +19,8 @@ namespace MazeApp.ViewModel
 
         public bool IsBestResultValid
         {
-            get 
-            { 
+            get
+            {
                 return this.BestResult != null;
             }
         }
@@ -54,7 +51,8 @@ namespace MazeApp.ViewModel
             }
         }
 
-        public int PrizeX {
+        public int PrizeX
+        {
             get
             {
                 return prizePosition.Column;
@@ -119,7 +117,8 @@ namespace MazeApp.ViewModel
             }
         }
 
-        public int ElapsedTime { 
+        public int ElapsedTime
+        {
             get
             {
                 return gameTime;
@@ -141,7 +140,7 @@ namespace MazeApp.ViewModel
             this.BestResult = ScoreLogger.ReadBestResult(logPath, new Result(Algorithm, MazeWidth, MazeHeight, IsLimitedVisibility));
             dispatcherTimer = new();
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            dispatcherTimer.Tick += new EventHandler((s,e) => increaseTimer());
+            dispatcherTimer.Tick += new EventHandler((s, e) => increaseTimer());
             dispatcherTimer.Start();
             SetTimer();
 
@@ -190,7 +189,7 @@ namespace MazeApp.ViewModel
 
         private bool IsNewHighScore()
         {
-            return ScoreLogger.LogScore(logPath, 
+            return ScoreLogger.LogScore(logPath,
                 new Result(PlayerName, ElapsedTime, Algorithm, MazeWidth, MazeHeight, IsLimitedVisibility));
         }
     }

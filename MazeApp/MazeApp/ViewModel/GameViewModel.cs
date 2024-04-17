@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Timers;
-using System.Windows.Threading;
 
 namespace MazeApp.ViewModel
 {
@@ -114,7 +113,7 @@ namespace MazeApp.ViewModel
         protected void SetTimer()
         {
             pickupTimer = new Timer(loopTime);
-            pickupTimer.Elapsed += new ElapsedEventHandler( (s, e) => UpdatePlayerPositions());
+            pickupTimer.Elapsed += new ElapsedEventHandler((s, e) => UpdatePlayerPositions());
             pickupTimer.AutoReset = true;
             pickupTimer.Enabled = true;
         }

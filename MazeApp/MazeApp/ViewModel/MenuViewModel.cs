@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MazeApp.Model;
+using MazeApp.View;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using MazeApp.Model;
-using MazeApp.View;
 
 namespace MazeApp.ViewModel
 {
-    public class MenuViewModel: INotifyPropertyChanged
+    public class MenuViewModel : INotifyPropertyChanged
     {
         private readonly Settings settings;
         public ICommand OpenMultiplayerCommand { get; set; }
@@ -15,7 +15,8 @@ namespace MazeApp.ViewModel
         public ICommand OpenSettingsCommand { get; set; }
         public ICommand CloseCommand { get; set; }
 
-        public MenuViewModel(Settings settings) {
+        public MenuViewModel(Settings settings)
+        {
             this.settings = settings;
             OpenMultiplayerCommand = new OpenWindowCommand(typeof(MultiplayerWindow), settings);
             OpenSettingsCommand = new OpenWindowCommand(typeof(SettingsWindow), settings);
@@ -30,6 +31,6 @@ namespace MazeApp.ViewModel
         }
 
 
-        
+
     }
 }

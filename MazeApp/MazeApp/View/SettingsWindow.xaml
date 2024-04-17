@@ -76,11 +76,43 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column ="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0 0 5 0">
                     <TextBlock Text="Maze Width" Style="{StaticResource InputLabelStyle}"/>
-                    <TextBox Margin="0,5" Text="{Binding MazeWidth, Mode=TwoWay}"/>
+                    <TextBox x:Name="widthBox" Margin="0,5">
+                        <TextBox.Text>
+                            <Binding Path="MazeWidth" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:MazeDimensionValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <StackPanel>
+                                    <AdornedElementPlaceholder/>
+                                    <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+                    </TextBox>
                 </StackPanel>
                 <StackPanel Grid.Column ="1" Orientation="Vertical" VerticalAlignment="Center" Margin="5 0 0 0">
                     <TextBlock Text="Maze Height" Style="{StaticResource InputLabelStyle}"/>
-                    <TextBox Margin="0,5" Text="{Binding MazeHeight, Mode=TwoWay}"/>
+                    <TextBox Margin="0,5" x:Name="heightBox">
+                        <TextBox.Text>
+                            <Binding Path="MazeHeight" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:MazeDimensionValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <StackPanel>
+                                    <AdornedElementPlaceholder/>
+                                    <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+                    </TextBox>
                 </StackPanel>
             </Grid>
 
@@ -88,7 +120,28 @@
                 <CheckBox FontFamily="Segoe UI" FontSize="10pt" Margin="0,5"  Foreground="{DynamicResource ForegroundBrush}" Content="Limited visibility mode" IsChecked="{Binding IsLimitedVisibility, Mode=TwoWay}"/>
             </StackPanel>
 
-            <Button Grid.Row ="6" Content="Save" Command="{Binding UpdateSettingsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Width="100px" HorizontalAlignment="Center" Margin="10 0 10 30"/>
+            <Button Grid.Row ="6" Content="Save" Command="{Binding UpdateSettingsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Width="100px" HorizontalAlignment="Center" Margin="10 0 10 30">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=widthBox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=heightBox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=widthBox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=heightBox}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
     </Grid>
 </Window>

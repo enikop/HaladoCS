@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using MazeApp.Model;
 using MazeApp.ViewModel;
-using MazeApp.Model;
+using System.Windows;
 
 namespace MazeApp.View
 {

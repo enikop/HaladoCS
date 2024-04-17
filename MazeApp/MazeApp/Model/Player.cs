@@ -36,7 +36,7 @@ namespace MazeApp.Model
                     break;
 
             }
-            return new Position(y,x);
+            return new Position(y, x);
 
         }
     }

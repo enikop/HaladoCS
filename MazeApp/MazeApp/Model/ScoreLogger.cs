@@ -1,14 +1,8 @@
-﻿using MazeApp.ViewModel;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Runtime.Serialization.Json;
-using MazeApp.Model.Enums;
+using System.Text;
 
 namespace MazeApp.Model
 {
@@ -32,7 +26,7 @@ namespace MazeApp.Model
         {
             List<Result> records = ReadRecords(filePath);
             Result? existingRecord = records.FirstOrDefault(r => r.IsSameCategory(previewRes));
-            if(existingRecord != null)
+            if (existingRecord != null)
             {
                 return existingRecord;
             }
@@ -58,7 +52,8 @@ namespace MazeApp.Model
                     string json = Encoding.UTF8.GetString(stream.ToArray());
                     File.WriteAllText(filePath, json);
                 }
-            } else
+            }
+            else
             {
                 return false;
             }

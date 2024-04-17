@@ -1,12 +1,15 @@
-﻿using System;
+﻿using MazeApp.Model.Enums;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MazeApp.Model.Enums;
 
 namespace MazeApp.Model
 {
-    public class Settings: INotifyPropertyChanged
+    public class Settings : INotifyPropertyChanged
     {
+        public static readonly int MIN_DIM = 4;
+        public static readonly int MAX_DIM = 20;
+
         private string playerName;
         private (int, int) mazeDimensions;
         private GenerationAlgorithm algorithm;
@@ -14,13 +17,13 @@ namespace MazeApp.Model
 
         public string PlayerName
         {
-            get 
-            { 
-                return playerName; 
+            get
+            {
+                return playerName;
             }
-            set 
-            { 
-                if(value.Length > 0)
+            set
+            {
+                if (value.Length > 0)
                 {
                     playerName = value;
                     NotifyPropertyChanged(nameof(PlayerName));
@@ -28,7 +31,8 @@ namespace MazeApp.Model
             }
         }
 
-        public bool IsLimitedVisibility { 
+        public bool IsLimitedVisibility
+        {
             get
             {
                 return isLimitedVisibility;
@@ -66,7 +70,7 @@ namespace MazeApp.Model
             }
             set
             {
-                if (value > 3 && value <= 20)
+                if (value >= MIN_DIM && value <= MAX_DIM)
                 {
                     //If algorithm is tesselation, set both dimensions if value is the power of 2, otherwise return
                     if (this.Algorithm == GenerationAlgorithm.Tesselation && (value & (value - 1)) != 0)
@@ -91,7 +95,7 @@ namespace MazeApp.Model
             }
             set
             {
-                if (value > 3 && value <= 20)
+                if (value >= MIN_DIM && value <= MAX_DIM)
                 {
                     //If algorithm is tesselation, set both dimensions if value is the power of 2, otherwise return
                     if (this.Algorithm == GenerationAlgorithm.Tesselation && (value & (value - 1)) != 0)
@@ -113,9 +117,9 @@ namespace MazeApp.Model
         {
             this.Algorithm = GenerationAlgorithm.Wilson;
             this.ColourTheme = Theme.Dark;
-            this.MazeHeight = 6;
-            this.MazeWidth = 6;
-            this.IsLimitedVisibility = false;
+            this.MazeHeight = 8;
+            this.MazeWidth = 8;
+            this.IsLimitedVisibility = true;
             this.playerName = "Unknown Owl";
         }
 

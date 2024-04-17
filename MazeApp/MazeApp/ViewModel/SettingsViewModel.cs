@@ -14,7 +14,7 @@ namespace MazeApp.ViewModel
     {
         private Settings settings;
         private Settings originalSettings;
-        public SettingsViewModel(Settings settings) 
+        public SettingsViewModel(Settings settings)
         {
             this.settings = new Settings(settings);
             this.originalSettings = settings;
@@ -55,9 +55,9 @@ namespace MazeApp.ViewModel
             }
             set
             {
-               settings.MazeHeight = value;
-               NotifyPropertyChanged(nameof(MazeWidth));
-               NotifyPropertyChanged(nameof(MazeHeight));
+                settings.MazeHeight = value;
+                NotifyPropertyChanged(nameof(MazeWidth));
+                NotifyPropertyChanged(nameof(MazeHeight));
             }
         }
         public Theme ColourTheme

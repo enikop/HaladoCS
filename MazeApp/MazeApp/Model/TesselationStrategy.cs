@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MazeApp.Model.Enums;
+using System;
 using System.Collections.Generic;
-using MazeApp.Model.Enums;
 
 namespace MazeApp.Model
 {
@@ -14,7 +14,7 @@ namespace MazeApp.Model
         }
 
         private void DoTesselation(Maze maze, int size)
-        { 
+        {
             if (size <= 1)
             {
                 return;

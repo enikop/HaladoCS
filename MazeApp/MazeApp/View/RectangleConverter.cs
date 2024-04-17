@@ -17,7 +17,7 @@ namespace MazeApp.View
             {
                 double left = x * cellSize + cellSize / 2.0 - w / 2.0;
                 double top = y * cellSize + cellSize / 2.0 - h / 2;
-                return new Rect(left, top, w,h);
+                return new Rect(left, top, w, h);
             }
             return DependencyProperty.UnsetValue;
         }

@@ -1,11 +1,6 @@
 ﻿using MazeApp.Model;
 using MazeApp.Model.Enums;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Numerics;
-using System.Timers;
-using System.Windows.Documents;
 
 namespace MazeApp.ViewModel
 {
@@ -21,7 +16,8 @@ namespace MazeApp.ViewModel
         private Pickup pickupTwo;
         private Pickup pickupMixed;
 
-        public bool HasGameEnded {
+        public bool HasGameEnded
+        {
             get
             {
                 return winnerNum != null;
@@ -41,12 +37,12 @@ namespace MazeApp.ViewModel
                 NotifyPropertyChanged(nameof(HasGameEnded));
             }
         }
-       
+
         public int PickupOneX
         {
             get { return pickupOne.Column; }
-            set 
-            { 
+            set
+            {
                 pickupOne.Column = value;
                 NotifyPropertyChanged(nameof(PickupOneX));
             }
@@ -109,13 +105,14 @@ namespace MazeApp.ViewModel
 
         public int PlayerOneScore
         {
-            get {
+            get
+            {
                 return playerOne.Score;
             }
             set
             {
-               playerOne.Score = value;
-               NotifyPropertyChanged(nameof(PlayerOneScore));
+                playerOne.Score = value;
+                NotifyPropertyChanged(nameof(PlayerOneScore));
             }
         }
 
@@ -161,8 +158,9 @@ namespace MazeApp.ViewModel
         public int PlayerOneX
         {
             get { return playerOne.Position.Column; }
-            set { 
-                playerOne.Position.Column = value; 
+            set
+            {
+                playerOne.Position.Column = value;
                 NotifyPropertyChanged(nameof(PlayerOneX));
             }
         }
@@ -170,8 +168,9 @@ namespace MazeApp.ViewModel
         public int PlayerOneY
         {
             get { return playerOne.Position.Row; }
-            set { 
-                playerOne.Position.Row = value; 
+            set
+            {
+                playerOne.Position.Row = value;
                 NotifyPropertyChanged(nameof(PlayerOneY));
             }
         }
@@ -179,8 +178,9 @@ namespace MazeApp.ViewModel
         public int PlayerTwoX
         {
             get { return playerTwo.Position.Column; }
-            set { 
-                playerTwo.Position.Column = value; 
+            set
+            {
+                playerTwo.Position.Column = value;
                 NotifyPropertyChanged(nameof(PlayerTwoX));
             }
         }
@@ -188,13 +188,14 @@ namespace MazeApp.ViewModel
         public int PlayerTwoY
         {
             get { return playerTwo.Position.Row; }
-            set { 
+            set
+            {
                 playerTwo.Position.Row = value;
                 NotifyPropertyChanged(nameof(PlayerTwoY));
             }
         }
 
-        public MultiplayerViewModel(Settings settings): base(settings)
+        public MultiplayerViewModel(Settings settings) : base(settings)
         {
             this.playerOne = new Player();
             this.playerTwo = new Player();
@@ -225,7 +226,7 @@ namespace MazeApp.ViewModel
             return output;
         }
 
-        public override void UpdatePlayerPositions() 
+        public override void UpdatePlayerPositions()
         {
             if (!HasGameEnded)
             {
@@ -241,7 +242,7 @@ namespace MazeApp.ViewModel
                 if (playerOne.MoveDirection.HasFlag(dir))
                 {
                     Position newPos = playerOne.PreviewStepOne(dir);
-                    if(IsWithinBoundaries(newPos) && !maze.IsWallBetween(playerOne.Position, newPos))
+                    if (IsWithinBoundaries(newPos) && !maze.IsWallBetween(playerOne.Position, newPos))
                     {
                         PlayerOneX = newPos.Column;
                         PlayerOneY = newPos.Row;

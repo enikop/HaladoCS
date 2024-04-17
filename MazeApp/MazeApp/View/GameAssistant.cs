@@ -1,10 +1,10 @@
 ﻿using MazeApp.Model;
+using MazeApp.Model.Enums;
 using MazeApp.ViewModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows;
-using MazeApp.Model.Enums;
 
 namespace MazeApp.View
 {
