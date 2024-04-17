@@ -109,10 +109,14 @@
                 </Path>
             </Canvas>
         </Grid>
-        <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource BackgroundBrush}" Visibility="{Binding HasGameEnded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
-            <Label Style="{StaticResource HighScoreStyle}" Content="{Binding ElapsedTime}" ContentStringFormat="Your time: {0}s"/>
-            <Label Style="{StaticResource HighScoreStyle}" Content="New Best Time!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" />
-        </StackPanel>
+        <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource BackgroundBrush}" Visibility="{Binding HasGameEnded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+            <Canvas Grid.Row="0" Grid.Column="0" Width="{Binding MazeTotalWidth}" Height="{Binding MazeTotalHeight}" Background="{DynamicResource BackgroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            </Canvas>
+            <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource BackgroundBrush}" Visibility="{Binding HasGameEnded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+                <Label Style="{StaticResource HighScoreStyle}" Content="{Binding ElapsedTime}" ContentStringFormat="Your time: {0}s"/>
+                <Label Style="{StaticResource HighScoreStyle}" Content="New Best Time!" Visibility="{Binding IsHighScore, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" />
+            </StackPanel>
+        </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
