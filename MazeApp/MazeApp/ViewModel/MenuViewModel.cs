@@ -13,6 +13,7 @@ namespace MazeApp.ViewModel
         public ICommand OpenMultiplayerCommand { get; set; }
         public ICommand OpenSingleplayerCommand { get; set; }
         public ICommand OpenSettingsCommand { get; set; }
+        public ICommand OpenHelpCommand { get; set; }
         public ICommand CloseCommand { get; set; }
 
         public MenuViewModel(Settings settings)
@@ -21,6 +22,7 @@ namespace MazeApp.ViewModel
             OpenMultiplayerCommand = new OpenWindowCommand(typeof(MultiplayerWindow), settings);
             OpenSettingsCommand = new OpenWindowCommand(typeof(SettingsWindow), settings);
             OpenSingleplayerCommand = new OpenWindowCommand(typeof(SingleplayerWindow), settings);
+            OpenHelpCommand = new OpenWindowCommand(typeof (HelpWindow));
             CloseCommand = new CloseWindowCommand();
         }
         public event PropertyChangedEventHandler? PropertyChanged;

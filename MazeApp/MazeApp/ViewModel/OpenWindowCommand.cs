@@ -9,8 +9,12 @@ namespace MazeApp.ViewModel
     public class OpenWindowCommand : ICommand
     {
         private readonly Type windowType;
-        private readonly Settings settings;
+        private readonly Settings? settings;
 
+        public OpenWindowCommand(Type windowType)
+        {
+            this.windowType = windowType;
+        }
 
         public OpenWindowCommand(Type windowType, Settings settings)
         {
@@ -27,10 +31,11 @@ namespace MazeApp.ViewModel
 
         public void Execute(object? parameter)
         {
-            ConstructorInfo? ctor = windowType.GetConstructor(new[] { typeof(Settings) });
+            // if settings is null, empty parameter constructor should be called, otherwise the one with the Settings type parameter
+            ConstructorInfo? ctor = windowType.GetConstructor(settings == null ? Type.EmptyTypes : new[] { typeof(Settings) });
             if (ctor != null)
             {
-                Window window = (Window)ctor.Invoke(new object[] { settings });
+                Window window = (Window)ctor.Invoke(settings == null ? Type.EmptyTypes : new object[] { settings });
                 window.ShowDialog();
             }
             else

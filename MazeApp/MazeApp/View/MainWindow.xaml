@@ -48,13 +48,14 @@
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <Button Grid.Row="1" Content="Single player" Width="250" Command="{Binding OpenSingleplayerCommand}"/>
             <Button Grid.Row="2" Content="Multiplayer" Width="250" Command="{Binding OpenMultiplayerCommand}"/>
-            <Button Grid.Row="4" Content="Settings" Width="250" Command="{Binding OpenSettingsCommand}"/>
+            <Button Grid.Row="3" Content="Settings" Width="250" Command="{Binding OpenSettingsCommand}"/>
+            <Button Grid.Row="4" Content="Help" Width="250" Command="{Binding OpenHelpCommand}"/>
             <Button Grid.Row="5" Content="Quit" Width="250" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
         </Grid>
     </Grid>

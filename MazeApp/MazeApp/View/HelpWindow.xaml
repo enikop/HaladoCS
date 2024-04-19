@@ -1,0 +1,126 @@
+﻿<Window x:Class="MazeApp.View.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MazeApp.View"
+        mc:Ignorable="d"
+        Title="HelpWindow"  
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
+        MinWidth="450px">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UIElements/UIElements.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type Paragraph}">
+                <Setter Property="Margin" Value="0 4"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid  Background="{DynamicResource BackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10px"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row ="0" Grid.Column="0" Style="{DynamicResource HeaderLabelStyle}"/>
+        <Border Grid.Column="0" Grid.Row="0" BorderThickness="0 0 0 4">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle StrokeDashArray="1 2" StrokeThickness="4"
+                            Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+                            Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
+                            <Rectangle.Stroke>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="{DynamicResource PlayerTwoColor}" Offset="0.0" />
+                                    <GradientStop Color="{DynamicResource PlayerOneColor}" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Rectangle.Stroke>
+                        </Rectangle>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+        </Border>
+        <FlowDocumentScrollViewer Padding="0" Grid.Row="2" VerticalScrollBarVisibility="Auto" MaxHeight="400px" MaxWidth="600px" Margin="10 0 10 0">
+            <FlowDocument Foreground="{StaticResource ForegroundBrush}">
+                <Paragraph FontSize="20" Margin="0 20 0 10" Foreground="{StaticResource PlayerTwoBrush}">Setup</Paragraph>
+                <Paragraph>
+                    In the <Italic>Settings</Italic> menu, type your username into the corresponding field, 
+                    choose your preferred colour theme (previews are available) and save all changes.
+                </Paragraph>
+                <Paragraph>
+                   You can also manipulate the key parameters of the randomly generated mazes:
+                </Paragraph>
+                <List Margin="0 4">
+                    <ListItem>
+                        <Paragraph>
+                            Choose your preferred maze generation algorithm
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>
+                            Set the dimensions of the maze
+                        </Paragraph>
+                        <List Margin="0">
+                            <ListItem>
+                                <Paragraph>
+                                    values of width and height should remain between 4 and 20
+                                </Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>
+                                    if tesselation is chosen for generation algorithm, width and height should be powers of two and equal
+                                </Paragraph>
+                            </ListItem>
+                        </List>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>
+                            Turn limited visibility mode on and off
+                        </Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph FontSize="20" Margin="0 20 0 10" Foreground="{StaticResource PlayerOneBrush}" TextAlignment="Right">Single player</Paragraph>
+                <Paragraph>Starting from the top left corner of the maze, 
+                    reach the square in the top right corner by using either the
+                    arrow keys or the WASD keys for moving.
+                </Paragraph>
+                <Paragraph>
+                    Your timer is in the bottom right
+                    corner of your screen. Try to achieve a better time than the 
+                    high score that appears below the maze.
+                </Paragraph>
+                <Paragraph>
+                    Don't forget to save your username in the
+                    <Italic>Settings</Italic> menu before playing so that your achievements will
+                    be saved correctly!
+                </Paragraph>
+                <Paragraph FontSize="20" Margin="0 20 0 10" Foreground="{StaticResource PlayerTwoBrush}">Multiplayer</Paragraph>
+                <Paragraph>
+                    One of the players (starting top left) uses WASD, the other (starting bottom right) uses the arrow keys for movement.
+                </Paragraph>
+                <Paragraph>
+                    Your task is to collect the colourful squares in the maze. Each square of your own colour is worth 1 points, 
+                    however, you cannot pick up squares of your opponent's colour. The third colour is available for both of you and is 
+                    worth double the points.
+                </Paragraph>
+                <Paragraph>
+                    Your current score can be seen below the maze.
+                </Paragraph>
+                <Paragraph>
+                   The first player to reach
+                    <Bold>15 points</Bold> wins the game.
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+        <Button Grid.Row="3" VerticalAlignment="Center" Margin="10" Content="Quit" Width="250" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+    </Grid>
+</Window>
