@@ -12,7 +12,7 @@ namespace MazeApp.View
             if (values.Length == 2 && values[0] is int width && values[1] is int height)
             {
                 return new Rect(0, 0, width, height);
-            }
+            } //cell coordinates
             else if (values.Length == 5 && values[0] is int x && values[1] is int y && values[2] is int w && values[3] is int h && values[4] is int cellSize)
             {
                 double left = x * cellSize + cellSize / 2.0 - w / 2.0;

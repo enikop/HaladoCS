@@ -14,7 +14,7 @@ namespace MazeApp.ViewModel
         private int cellSize;
         private readonly int loopTime = 90;
 
-        private Timer pickupTimer;
+        private Timer refreshTimer;
 
         public int CellSize
         {
@@ -107,23 +107,23 @@ namespace MazeApp.ViewModel
             //Cell size is proportionally changed with the largest dimension of the maze
             //It's 36 at a 16 grid length, but it does not grow beyond 60
             this.CellSize = (int)Math.Floor(Math.Min(60, 38 * 16.0 / Math.Max(this.MazeWidth, this.MazeHeight)));
-            pickupTimer = new Timer(loopTime);
+            refreshTimer = new Timer(loopTime);
         }
 
         protected void SetTimer()
         {
-            pickupTimer = new Timer(loopTime);
-            pickupTimer.Elapsed += new ElapsedEventHandler((s, e) => UpdatePlayerPositions());
-            pickupTimer.AutoReset = true;
-            pickupTimer.Enabled = true;
+            refreshTimer = new Timer(loopTime);
+            refreshTimer.Elapsed += new ElapsedEventHandler((s, e) => UpdatePlayerPositions());
+            refreshTimer.AutoReset = true;
+            refreshTimer.Enabled = true;
         }
 
         public void DisposeTimer()
         {
-            if (pickupTimer != null)
+            if (refreshTimer != null)
             {
-                pickupTimer.Stop();
-                pickupTimer.Dispose();
+                refreshTimer.Stop();
+                refreshTimer.Dispose();
             }
         }
 

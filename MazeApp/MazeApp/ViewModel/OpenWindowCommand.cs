@@ -40,7 +40,7 @@ namespace MazeApp.ViewModel
             }
             else
             {
-                throw new ArgumentException("Constructor with Settings parameter not found.");
+                throw new ArgumentException("Constructor not found.");
             }
         }
     }

@@ -52,12 +52,12 @@ namespace MazeApp.Model
                     string json = Encoding.UTF8.GetString(stream.ToArray());
                     File.WriteAllText(filePath, json);
                 }
+                return true;
             }
             else
             {
                 return false;
             }
-            return true;
         }
     }
 }

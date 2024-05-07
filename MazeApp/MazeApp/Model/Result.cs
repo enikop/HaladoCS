@@ -20,15 +20,7 @@ namespace MazeApp.Model
         [DataMember]
         public bool IsLimitedVisibility { get; set; }
 
-        public Result()
-        {
-            PlayerName = "Player";
-            ElapsedTime = 1000;
-            Algorithm = (GenerationAlgorithm.Wilson).ToString();
-            MazeWidth = 16;
-            MazeHeight = 16;
-            IsLimitedVisibility = true;
-        }
+        public Result() : this("Player", 1000, GenerationAlgorithm.Wilson, 16, 16, true) { }
         public Result(string playerName, int elapsedTime, GenerationAlgorithm generationAlgorithm, int mazeWidth, int mazeHeight, bool isLimitedVisibility)
         {
             PlayerName = playerName;
@@ -39,15 +31,8 @@ namespace MazeApp.Model
             IsLimitedVisibility = isLimitedVisibility;
         }
 
-        public Result(GenerationAlgorithm generationAlgorithm, int mazeWidth, int mazeHeight, bool isLimitedVisibility)
-        {
-            PlayerName = "none";
-            ElapsedTime = 99999;
-            Algorithm = generationAlgorithm.ToString();
-            MazeWidth = mazeWidth;
-            MazeHeight = mazeHeight;
-            IsLimitedVisibility = isLimitedVisibility;
-        }
+        public Result(GenerationAlgorithm generationAlgorithm, int mazeWidth, int mazeHeight, bool isLimitedVisibility) : 
+            this("none", 99999, generationAlgorithm, mazeWidth, mazeHeight, isLimitedVisibility) { }
 
         public bool IsSameCategory(Result other)
         {
